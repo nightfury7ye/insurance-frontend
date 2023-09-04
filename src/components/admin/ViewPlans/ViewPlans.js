@@ -2,7 +2,8 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Table from '../../../shared/table/Table'
 import { useHistory, useNavigate } from "react-router-dom"
-import { addPlanApi, deletePlanApi, getplans, updatePlanApi } from '../../../service/CustomerApis'
+import { getplans } from '../../../service/CustomerApis'
+import { addPlanApi, deletePlanApi, updatePlanApi } from '../../../service/AdminApis'
 
 const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
     const [plansData, setPlansData] = useState([])
