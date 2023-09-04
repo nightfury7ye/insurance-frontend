@@ -1,24 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Login from './components/login/Login';
+import AdminPanel from './components/admin/AdminPanel/AdminPanel';
+import CustomerPanel from './components/customer/CustomerPanel/CustomerPanel';
+import EmployeePanel from './components/employee/EmployeePanel/EmployeePanel';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Routes>
+      <Route path="/" element={<Navigate to="login"/>} />
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/customerdashboard' element={<CustomerPanel/>}/>
+      <Route path='/admindashboard' element={<AdminPanel/>}/>
+      <Route path='/employeedashboard' element={<EmployeePanel/>}/>
+    </Routes>
+    </>
   );
 }
 

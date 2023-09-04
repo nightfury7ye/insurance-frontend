@@ -1,0 +1,45 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.policy-details-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+.form-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 600px;
+    background-color: #f9f9f9;
+}
+
+.form-box label {
+    font-weight: bold;
+    border-right: 1px solid #ccc;
+    width: 50%;
+}
+
+.form-box input {
+    width: 50%;
+    text-align: center;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    padding: 5px;
+    pointer-events: none;
+}
+
+.buy-plan-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem; 
+  }
