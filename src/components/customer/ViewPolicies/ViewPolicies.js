@@ -15,9 +15,10 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
 
   const getPolicies = async () => {
     try {
+      console.log(curPageNo, size);
       const response = await getPoliciesApi(token, customerid, curPageNo, size)
 
-      console.log("inside getPolicies", response.data);
+      console.log("inside getPolicies", response, size);
 
       const policyDtoArray = response.data.content.map((policy) => ({
         policyno: policy.policyno,
@@ -33,6 +34,7 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
 
       setCurPageNo(Math.min(curPageNo, response.data.totalPages));
       setTotalPages(response.data.totalPages);
+      console.log("SIZE AND PAGE: ", Math.min(curPageNo, response.data.totalPages),response.data.totalPages );
     } catch (error) {
       console.log("Error fetching policies:", error);
     }
@@ -57,6 +59,8 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
 
   const handleSizeChange = (event) => {
     const newSize = parseInt(event.target.value, 10);
+    console.log(typeof newSize, newSize);
+    setCurPageNo(1)
     setSize(newSize);
   };
 
@@ -95,9 +99,9 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
             onChange={handleSizeChange}
             className='form-select'
           >
-            <option value="4">4</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
+            <option value={4}>4</option>
+            <option value={8}>8</option>
+            <option value={12}>12</option>
           </select>
         </div>
         <div className='col-md-4'>

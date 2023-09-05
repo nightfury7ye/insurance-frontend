@@ -31,6 +31,9 @@ const Login = () => {
         }else if(role == "ROLE_EMPLOYEE"){
           navigation(`/employeedashboard`)
           console.log("After User navigate");
+        }else if(role == "ROLE_AGENT"){
+          navigation(`/agentdashboard`)
+          console.log("After User navigate");
         }
         alert('Login Successfull !!!', response.result);
         console.log(response);
@@ -41,50 +44,48 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card login-card" style={{width: '50vh'}}>
-            <div className="card-body">
-              <h3 className="card-title">Login</h3>
-              <div className="form-group">
-                <label>Username</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label>Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              {/* <div className="form-group">
-                <label>Role</label>
-                <select
-                  className="form-control"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <option value="admin">Admin</option>
-                  <option value="agent">Agent</option>
-                  <option value="customer">Customer</option>
-                  <option value="employee">Employee</option>
-                </select>
-              </div> */}
-              <button
-                className="btn btn-primary mt-3"
-                onClick={handleLogin}
-              >
-                Login
-              </button>
+    <div className="container mt-5 d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+      <div className="col-md-3">
+        <div className="card login-card" style={{ width: '50vh' }}>
+          <div className="card-body">
+            <h3 className="card-title">Login</h3>
+            <div className="form-group">
+              <label>Username</label>
+              <input
+                type="text"
+                className="form-control"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            {/* <div className="form-group">
+              <label>Role</label>
+              <select
+                className="form-control"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="admin">Admin</option>
+                <option value="agent">Agent</option>
+                <option value="customer">Customer</option>
+                <option value="employee">Employee</option>
+              </select>
+            </div> */}
+            <button
+              className="btn btn-primary mt-3"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
           </div>
         </div>
       </div>

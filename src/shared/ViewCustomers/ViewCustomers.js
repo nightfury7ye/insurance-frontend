@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from '../table/Pagination';
 import Table from '../table/Table';
+import { getCustomersApi } from '../../service/EmployeeApis';
 
 const ViewCustomers = () => {
   const token = localStorage.getItem("auth");
@@ -12,15 +13,7 @@ const ViewCustomers = () => {
 
   const getCustomers = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/employeeapp/get_all_customers`, {
-        params: {
-          page: curPageNo >= 1 ? (curPageNo - 1) : curPageNo,
-          size: size,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await getCustomersApi(curPageNo, size)
 
       console.log("inside getCustomers", response.data);
 
@@ -31,7 +24,7 @@ const ViewCustomers = () => {
         email: customer.email,
         phoneno: customer.phoneno,
         documentStatus: customer.documentStatus,
-        userstatus: customer.userstatus,
+        userstatus: customer.userStatus.statusname,
       }));
 
       setCustomerData(customerDtoArray);

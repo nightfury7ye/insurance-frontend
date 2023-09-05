@@ -11,6 +11,26 @@ export const getschemes = async (token, planid) => {
 }
 
 export const purchasePolicyApi = async (customerid, schemeid, policyDetailsGlobal, premiumType) => {
+
+      if(localStorage.getItem("role") == "ROLE_AGENT"){
+        console.log("IN AGENT SIDE OF PURCHASEAPI");
+          const response = await axios.post(`http://localhost:8080/insurance-app/agent/customer/${customerid}/policy`, {
+          premiumamount: policyDetailsGlobal.installmentAmount,
+          sumassured: policyDetailsGlobal.totalAmount
+        },
+        {
+          params: {
+              agentid: localStorage.getItem("agentid"),
+              schemeid: schemeid,
+              investtime: policyDetailsGlobal.years,
+              typeid: premiumType,
+              statusid: 1
+          }
+        }
+        );
+        return response
+      }
+
       const response = await axios.post(`http://localhost:8080/insurance-app/customer/${customerid}/policy`, {
         premiumamount: policyDetailsGlobal.installmentAmount,
         sumassured: policyDetailsGlobal.totalAmount

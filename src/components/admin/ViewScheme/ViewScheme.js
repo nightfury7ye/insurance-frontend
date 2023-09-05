@@ -4,6 +4,7 @@ import Table from '../../../shared/table/Table';
 import Pagination from '../../../shared/table/Pagination';
 import axios from 'axios';
 import { getschemes } from '../../../service/CustomerApis';
+import { addSchemeApi, updatePlanApi } from '../../../service/AdminApis';
 
 const ViewScheme = ({planid, setPlanid}) => {
     const location = useLocation();
@@ -56,56 +57,21 @@ const ViewScheme = ({planid, setPlanid}) => {
     }
 
     const addScheme = async () => {
-        let response = await axios.post(`http://localhost:8080/adminapp/save_insurance_scheme/${planid}/1`,
-            {
-                scheme_name: schemeDto.scheme_name,
-                schemeDetails: {
-                    discription: schemeDto.discription,
-                    min_amount: schemeDto.min_amount,
-                    max_amount: schemeDto.max_amount,
-                    min_invest_time: schemeDto.min_invest_time,
-                    max_invest_time: schemeDto.max_invest_time,
-                    min_age: schemeDto.min_age,
-                    max_age: schemeDto.max_age,
-                    registrationcommratio: schemeDto.registrationcommratio,
-                    installmentcommratio: schemeDto.installmentcommratio
-                }
-            },
-            {
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            })
+        let response = await addSchemeApi(schemeDto, planid, token)
             getschemesData()
             // setSchemename("")
         alert(`Scheme added successfully`)
     }
 
     const updateScheme = async () => {
-        let response = await axios.put(`http://localhost:8080/adminapp/update_insurance_scheme/${schemeid}/${1}`,
-        {
-            scheme_name: schemeDto.scheme_name,
-            schemeDetails: {
-                discription: schemeDto.discription,
-                min_amount: schemeDto.min_amount,
-                max_amount: schemeDto.max_amount,
-                min_invest_time: schemeDto.min_invest_time,
-                max_invest_time: schemeDto.max_invest_time,
-                min_age: schemeDto.min_age,
-                max_age: schemeDto.max_age,
-                registrationcommratio: schemeDto.registrationcommratio,
-                installmentcommratio: schemeDto.installmentcommratio
-            }
-        },
-        {
-            headers:{
-                Authorization:`Bearer ${token}`
-            }
-        })
-        getschemesData()
-        setSchemeid()
-        // setSchemename("")
-        alert(`scheme details updated successfully`)
+        try {
+            let response = await updatePlanApi(schemeid, schemeDto, token)
+            getschemesData()
+            setSchemeid()
+        } catch (error) {
+            console.log(`Error deleting ${schemeDto.scheme_name}:`, error);
+            alert(`Error deleting ${schemeDto.scheme_name}:`)
+        }
     }
 
     const onChangeSchemeDto = (e) => {
@@ -131,7 +97,7 @@ const ViewScheme = ({planid, setPlanid}) => {
             max_age: schemeObject.schemeDetails.max_age,
             profit_ratio: schemeObject.schemeDetails.profit_ratio,
             registrationcommratio: schemeObject.schemeDetails.registrationcommratio,
-            installmentcommratio: schemeObject.schemeDetails.installmentcommratio,
+            // installmentcommratio: schemeObject.schemeDetails.installmentcommratio,
             status: schemeObject.status.statusid
         });
     }
@@ -147,7 +113,7 @@ const ViewScheme = ({planid, setPlanid}) => {
             max_age: 0,
             profit_ratio: 0,
             registrationcommratio: 0,
-            installmentcommratio: 0,
+            // installmentcommratio: 0,
             status: 1
         })
     }
@@ -162,7 +128,7 @@ const ViewScheme = ({planid, setPlanid}) => {
                                 "max age",
                                 "profit ratio",
                                 "registration comm ratio",
-                                "installment comm ratio",
+                                // "installment comm ratio",
                                 "status"]
     console.log(planid);
   return (
@@ -176,7 +142,7 @@ const ViewScheme = ({planid, setPlanid}) => {
                     </div>
                     <div className="modal-body">
                     <form>
-                        {schemeDto.installmentcommratio === 0 ?
+                        {
                         Object.keys(schemeDto).map((key, index) => (
                             <div className="mb-3 row" key={index}>
                                 <label htmlFor={key} className="col-sm-3 col-form-label">{key.replace(/_/g, ' ').toUpperCase()}</label>
@@ -192,8 +158,7 @@ const ViewScheme = ({planid, setPlanid}) => {
                                     />
                                 </div>
                             </div>
-                        ))
-                        : console.log("Dynamic add form: ",schemeDto)}
+                        ))}
                     </form>
                     </div>
                     <div className="modal-footer">
