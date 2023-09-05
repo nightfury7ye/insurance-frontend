@@ -2,6 +2,7 @@ import React from 'react'
 import './Table.css'
 
 const Table = ({headers, data, enableUpdate, enableDelete, ...props}) => {
+    console.log("ravi");
 console.log("Inside Table: ",data);
 const tableHeaders = headers;
 const rowDataElements = data.map((objectValue, index) => {

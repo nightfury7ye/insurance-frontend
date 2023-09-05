@@ -9,7 +9,8 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
     const [policyData, setPolicyData] = useState({})
     const [insuranceScheme, setInsuranceScheme] = useState({})
     const [paymentDto, setPaymentDto] = useState([])
-    let paymentButton = true
+    // let paymentButton = true
+    const [paymentButton, setPaymentButton] = useState(true)
 
     const getPolicy = async () => {
         try {
@@ -65,24 +66,23 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
         alert(`You have successfully paid the amount of for Policy No :${policyDetailsGlobal?.policyno}`);
       }
 
+    let i = 0
     const payButton = (objectValue) => {
-      if(objectValue.status.statusname == 'pending' && paymentButton == true){
+      if(objectValue.status.statusname == 'pending'){
         console.log(paymentButton);
-        paymentButton = false
         return(
           <>
-          {/* <button className="btn btn-secondary mb-3" onClick={() => {payment(objectValue)}}>Pay</button> */}
-          <td className='text-center'>%</td> 
+          <button className="btn btn-secondary mb-3" onClick={() => {payment(objectValue)}}>Pay</button>
           </>
-      )
+        )
       }
-      console.log("paybutton comment");
-        return(
+      console.log(i);
+      return(
             <>
-            <td className='text-center'>-</td>  
+            <td className='text-center'>-</td>
             </>
         )
-    }
+      }
 
       const tableAccountHeaders = ["ID",
                                     "Payment Type",
@@ -114,7 +114,7 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
                 </table>
             </div>
             <div className='table-container'>
-            <h6 style={{marginLeft:'10px', textAlign: 'center'}}>Scheme Details</h6>
+            <h6 style={{marginLeft:'10px',marginTop: '3rem', textAlign: 'center'}}>Scheme Details</h6>
                 <table class="table table-striped">
                 <thead>
                     <tr>
@@ -133,6 +133,8 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
                 </table>
             </div>
             <div className='col' style={{marginTop: '3rem'}}>
+            <h6 style={{marginLeft:'10px', textAlign: 'center'}}>Payment Details</h6>
+
                 <Table
                 headers={tableAccountHeaders}
                 data={paymentDto}

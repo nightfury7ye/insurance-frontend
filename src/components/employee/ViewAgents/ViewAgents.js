@@ -4,6 +4,7 @@ import Table from '../../../shared/table/Table';
 import Pagination from '../../../shared/table/Pagination';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { DeleteAgentApi, addAgentApi, getAgentsApi } from '../../../service/AgentApis';
 
 const ViewAgents = () => {
   const token = localStorage.getItem("auth");
@@ -25,15 +26,7 @@ const ViewAgents = () => {
 
   const getAgents = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/employeeapp/get_all_agents`, {
-        params: {
-          page: curPageNo >= 1 ? (curPageNo - 1) : curPageNo,
-          size: size,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await getAgentsApi(curPageNo, size, token)
 
       console.log("inside getAgents", response.data);
 
@@ -42,7 +35,7 @@ const ViewAgents = () => {
         firstname: agent.firstname,
         lastname: agent.lastname,
         qualification: agent.qualification,
-        commision: agent.commision,
+        commision: agent.totalcommision,
         username: agent.user.username,
       }));
 
@@ -87,11 +80,7 @@ const ViewAgents = () => {
       const agentid = agentToDelete.agentid;
       console.log("handleDeleteAgent: ", agentid, agentToDelete);
       try {
-        await axios.delete(`http://localhost:8080/employeeapp/delete_agent/${agentid}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await DeleteAgentApi(agentid, token)
         getAgents();
 
         alert(`Agent with ID ${agentid} deleted successfully`);
@@ -104,20 +93,7 @@ const ViewAgents = () => {
 
   const addAgent = async () => {
     try {
-      const response = await axios.post(`http://localhost:8080/employeeapp/save_agent/1`, {
-        firstname: agentDto.firstname,
-        lastname: agentDto.lastname,
-        qualification: agentDto.qualification,
-        commision: agentDto.commision,
-        user: {
-          username: agentDto.username,
-          password: agentDto.password,
-        }
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await addAgentApi(agentDto)
 
       getAgents();
 
@@ -132,7 +108,7 @@ const ViewAgents = () => {
     "First Name",
     "Last Name",
     "Qualification",
-    "Commision",
+    "Commision(Rs)",
     "Username",
   ];
 
