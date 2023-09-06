@@ -27,6 +27,9 @@ const SidebarAdmin = ({moduleName, moduleNameSetter}) => {
             <div onClick={() => {moduleNameSetter("view_employees")}}>
               <CDBSidebarMenuItem icon="table">View Employees</CDBSidebarMenuItem>
             </div>
+            <div onClick={() => {moduleNameSetter("view_profile")}}>
+              <CDBSidebarMenuItem icon="table">View Profile</CDBSidebarMenuItem>
+            </div>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 

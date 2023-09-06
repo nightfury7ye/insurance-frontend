@@ -4,6 +4,7 @@ import SidebarAdmin from '../SidebarAdmin/SidebarAdmin'
 import ViewScheme from '../ViewScheme/ViewScheme'
 import Navbar from '../../../shared/Navbar'
 import ViewEmployees from '../ViewEmployees/ViewEmployees'
+import AdminProfile from '../adminProfile/AdminProfile'
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -31,6 +32,10 @@ const AdminPanel = () => {
                     }
                     {moduleName === "view_employees" &&
                     <ViewEmployees moduleNameSetter = {setModuleName}/>
+                    }
+                    {moduleName === "view_profile" &&
+                    <AdminProfile
+                    moduleNameSetter = {setModuleName}/>
                     }
                 </div>
             </div>

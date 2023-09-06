@@ -9,6 +9,8 @@ import CustomerViewSchemes from '../../customer/CustomerViewSchemes/CustomerView
 import SchemeDetails from '../../customer/SchemeDetails/SchemeDetails';
 import ConfirmPolicyDetails from '../../customer/ConfirmPolicyDetails/ConfirmPolicyDetails';
 import Payment from '../../../shared/Payment';
+import Commission from '../../commission/Commission';
+import AgentProfile from '../agentProfile/AgentProfile';
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -76,6 +78,16 @@ const AgentPanel = () => {
                     <Payment
                     schemeDto = {schemeDto}
                     policyDetailsGlobal={policyDetailsGlobal}
+                    moduleNameSetter = {setModuleName}/>
+                    }
+                    {moduleName === "view_commisions" &&
+                    <Commission
+                    schemeDto = {schemeDto}
+                    policyDetailsGlobal={policyDetailsGlobal}
+                    moduleNameSetter = {setModuleName}/>
+                    }
+                    {moduleName === "view_profile" &&
+                    <AgentProfile
                     moduleNameSetter = {setModuleName}/>
                     }
                 </div>

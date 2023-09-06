@@ -106,6 +106,7 @@ const ViewCustomers = () => {
             onChange={handleSizeChange}
             className='form-select'
           >
+            <option value="1">1</option>
             <option value="4">4</option>
             <option value="8">8</option>
             <option value="12">12</option>

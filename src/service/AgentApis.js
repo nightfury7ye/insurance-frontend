@@ -60,3 +60,17 @@ export const addAgentApi = async (agentDto) => {
     });
     return response
 };
+
+export const getCommissionApi = async (agentid,curPageNo, size) => {
+    const response = await axios.get(`http://localhost:8080/insurance-app/agent/${agentid}/commission`, {
+      params: {
+        page: curPageNo >= 1 ? (curPageNo - 1) : curPageNo,
+        size: size,
+      },
+    });
+    return response
+};
+
+export const getWithdrawCommissionApi = async (commisionid) => {
+    await axios.put(`http://localhost:8080/insurance-app/commission/${commisionid}`);
+};

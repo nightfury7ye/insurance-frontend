@@ -29,6 +29,12 @@ const SidebarEmployee = ({moduleNameSetter}) => {
                 <div onClick={() => {moduleNameSetter("view_pending_customers")}}>
                   <CDBSidebarMenuItem icon="table">View Pending Customers</CDBSidebarMenuItem>
                 </div>
+                <div onClick={() => {moduleNameSetter("view_commission")}}>
+                  <CDBSidebarMenuItem icon="table">View Commissions</CDBSidebarMenuItem>
+                </div>
+                <div onClick={() => {moduleNameSetter("view_profile")}}>
+                  <CDBSidebarMenuItem icon="table">View Profile</CDBSidebarMenuItem>
+                </div>
               </CDBSidebarMenu>
             </CDBSidebarContent>
     

@@ -25,6 +25,9 @@ const SidebarAgent = ({moduleNameSetter}) => {
                 <div onClick={() => {moduleNameSetter("view_commisions")}}>
                   <CDBSidebarMenuItem icon="table">View Commisions</CDBSidebarMenuItem>
                 </div>
+                <div onClick={() => {moduleNameSetter("view_profile")}}>
+                  <CDBSidebarMenuItem icon="table">View Profile</CDBSidebarMenuItem>
+                </div>
               </CDBSidebarMenu>
             </CDBSidebarContent>
     
