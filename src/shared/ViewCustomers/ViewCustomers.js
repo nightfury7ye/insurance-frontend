@@ -3,19 +3,28 @@ import axios from 'axios';
 import Pagination from '../table/Pagination';
 import Table from '../table/Table';
 import { getCustomersApi } from '../../service/EmployeeApis';
+import { Button, Modal } from 'react-bootstrap';
 
 const ViewCustomers = () => {
   const token = localStorage.getItem("auth");
   const [customerData, setCustomerData] = useState([]);
+  const [customerFullData, setCustomerFullData] = useState([]);
   const [curPageNo, setCurPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [size, setSize] = useState(4);
+  const [doc1, setDoc1] = useState()
+  const [doc2, setDoc2] = useState()
+  const [doc3, setDoc3] = useState()
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   const getCustomers = async () => {
     try {
       const response = await getCustomersApi(curPageNo, size)
 
       console.log("inside getCustomers", response.data);
+
+      setCustomerFullData(response.data)
 
       const customerDtoArray = response.data.content.map((customer) => ({
         customerid: customer.customerid,
@@ -59,15 +68,70 @@ const ViewCustomers = () => {
   };
 
   const handleDeleteCustomer = async (customer) => {
-    // Check the current status and update accordingly
     if (customer.userstatus.statusid === 1) {
-      // If status is active, set it to disabled
       updateCustomerStatus(customer.customerid, 2);
     } else if (customer.userstatus.statusid === 2) {
-      // If status is disabled, set it to active
       updateCustomerStatus(customer.customerid, 1);
     }
   };
+
+  const handleDownload = async (d) => {
+    try {
+      console.log("handleDownload d: ",d);
+      const response = await axios.get(`http://localhost:8080/insurance-app/customer/document/download/${d}`, {
+        responseType: 'blob',// Set the response type to 'blob' for binary data
+        
+      });
+
+      console.log(response.data)
+
+      // Create a blob URL from the response data
+      const blobUrl = URL.createObjectURL(new Blob([response.data]));
+
+      // Create a link element and simulate a click to trigger the download
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      let filename
+      if(d == 0){
+        filename = "Aadhar.pdf"
+      }
+      if(d == 1){
+        filename = "Pan.pdf"
+      }
+      if(d == 2){
+        filename = "Voter.pdf"
+      }
+      
+      link.download = filename; // Use the original file name
+      link.click();
+
+      // Clean up the blob URL after the download
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.log('Error downloading file:', error);
+    }
+}
+
+  const viewDocuments = (index) => {
+    console.log("index from viewDocuments: ", index);
+    let customer = customerFullData.content[index]
+    console.log("customer from viewDocuments: ", customer, customerFullData);
+    if(customer.documents){
+    setDoc1(customer?.documents[0]?.documentid)
+    setDoc2(customer?.documents[1]?.documentid)
+    setDoc3(customer?.documents[2]?.documentid)
+    setShow(true)
+    }
+  }
+
+  const viewDocumentButton = (index) => {
+      console.log("objectValue", index);
+      return(
+        <>
+        <button className="btn btn-secondary mb-3" onClick={() => {viewDocuments(index)}}>View Documents</button>
+        </>
+      )
+  }
 
   const updateCustomerStatus = async (customerId, statusId) => {
     try {
@@ -129,8 +193,35 @@ const ViewCustomers = () => {
           enableUpdate={false}
           enableDelete={true}
           deleteFunction={handleDeleteCustomer}
+          viewDoc={viewDocumentButton}
         />
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Documents</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className='row'>
+          <Button className='my-1' variant="secondary" onClick={() => handleDownload(doc1)}>
+            Download Adhaar Card
+          </Button>
+          <Button className='my-1' variant="secondary" onClick={() => handleDownload(doc2)}>
+              Download Pan Card
+          </Button>
+          <Button className='my-1' variant="secondary" onClick={() => handleDownload(doc3)}>
+              Download Voter Card
+          </Button>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Done
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

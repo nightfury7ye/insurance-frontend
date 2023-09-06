@@ -59,12 +59,12 @@ const CommissionWithdrawals = () => {
   
     const handleApprove  = (data) =>{
       setShow(true)
-      setCommissionid(data.id)
+      setCommissionid(data.commisionid)
     }
   
     const approve = async () =>{
         try {
-            await approveCommissionApi(commissionid)
+            await approveCommissionApi(commissionid, token)
             alert("Withdraw request approved successfully")
             setShow(false)
             getWithdrawal()

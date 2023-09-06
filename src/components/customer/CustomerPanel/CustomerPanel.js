@@ -22,6 +22,7 @@ const CustomerPanel = () => {
   const [moduleName, setModuleName] = useState("view_plan");
   const [planid, setPlanid] = useState()
   const [schemeDto, setSchemeDto] = useState()
+  const [payment, setPayment] = useState()
   const [policyDetailsGlobal, setPolicyDetailsGlobal] = useState()
   const [customer, setCustomer] = useState({})
   const username = localStorage.getItem('username')
@@ -59,6 +60,7 @@ const CustomerPanel = () => {
 
                     {moduleName === "view_policy_details" && policyDetailsGlobal != undefined &&
                     <ViewpolicyDetails
+                    setPayment = {setPayment}
                     moduleNameSetter = {setModuleName}
                     policyDetailsGlobal={policyDetailsGlobal}/>
                     }
@@ -85,6 +87,7 @@ const CustomerPanel = () => {
                     {moduleName === "payment_page" && policyDetailsGlobal != undefined &&
                     <Payment
                     schemeDto = {schemeDto}
+                    payment={payment}
                     policyDetailsGlobal={policyDetailsGlobal}
                     moduleNameSetter = {setModuleName}/>
                     }

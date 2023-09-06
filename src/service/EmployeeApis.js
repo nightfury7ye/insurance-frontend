@@ -20,6 +20,11 @@ export const getEmployeeCommissionsApi = async (curPageNo, size) => {
   return response
 };
 
-export const approveCommissionApi = async (commissionid) => {
-  await axios.put(`http://localhost:8080/insurance-app/commission/${commissionid}/approve`);
+export const approveCommissionApi = async (commissionid, token) => {
+  console.log("inside approveCommissionApi: ", commissionid, token);
+  await axios.put(`http://localhost:8080/insurance-app/commission/${commissionid}/approve`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
