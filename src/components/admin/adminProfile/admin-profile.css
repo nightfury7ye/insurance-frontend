@@ -1,0 +1,56 @@
+.admin-profile-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin: 10px 0;
+    text-align: left;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .form-buttons {
+    margin-top: 20px;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .document-list {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .document-list a {
+    display: block;
+    margin-bottom: 5px;
+    text-decoration: underline;
+    color: #007bff;
+  }
+  
+  .document-list a:hover {
+    text-decoration: none;
+  }
+  
