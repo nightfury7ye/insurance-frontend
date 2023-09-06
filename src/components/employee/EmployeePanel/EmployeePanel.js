@@ -4,6 +4,8 @@ import ViewAgents from '../ViewAgents/ViewAgents';
 import Navbar from '../../../shared/Navbar';
 import ViewCustomers from '../../../shared/ViewCustomers/ViewCustomers';
 import ViewNonApprovedCustomers from '../ViewNonApprovedCustomers/ViewNonApprovedCustomers';
+import CommissionWithdrawals from '../commissionWithdrawals/CommissionWithdrawals';
+import EmployeeProfile from '../employeeProfile/EmployeeProfile';
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -31,6 +33,13 @@ const EmployeePanel = () => {
                     }
                     {moduleName === "view_pending_customers" &&
                     <ViewNonApprovedCustomers moduleNameSetter = {setModuleName} />
+                    }
+                    {moduleName === "view_commission" &&
+                    <CommissionWithdrawals moduleNameSetter = {setModuleName} />
+                    }
+                    {moduleName === "view_profile" &&
+                    <EmployeeProfile
+                    moduleNameSetter = {setModuleName}/>
                     }
                 </div>
             </div>

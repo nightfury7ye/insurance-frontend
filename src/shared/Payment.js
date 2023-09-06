@@ -50,10 +50,10 @@ const Payment = ({policyDetailsGlobal, schemeDto, moduleNameSetter}) => {
     const purchasePolicy = async () => {
         try {
             console.log("inside purchase policy");
-            // const response = await purchasePolicyApi(customerid, schemeDto.schemeid, policyDetailsGlobal, premiumType)
+            const response = await purchasePolicyApi(customerid, schemeDto.schemeid, policyDetailsGlobal, premiumType)
             console.log("inside purchase policy2");
             // firstPayment(response.data.policyno)
-            firstPayment(9)
+            firstPayment(response.data.policyno)
         } catch (error) {
           console.log("Error purchasing the policy:", error);
         }
