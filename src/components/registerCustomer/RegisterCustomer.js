@@ -1,8 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Form } from 'react-bootstrap';
-// import './RegisterCustomer.css'
-import { getCustomerAPI } from '../../../service/CustomerApis';
+import './RegisterCustomer.css'
 
 const IndianStates = [
 
@@ -13,13 +12,12 @@ const IndianStates = [
   
 ];
 
-const CustomerProfile = () => {
+const RegisterCustomer = () => {
 
     const [aadharCard, setAadharCard] = useState(null);
     const [panCard, setPanCard] = useState(null);
     const [voterCard, setVoterCard] = useState(null);
-    const [customerId, setCustomerId] = useState(localStorage.getItem("customerid"))
-    const username = localStorage.getItem("username")
+    const [customerId, setCustomerId] = useState()
  
   const [formData, setFormData] = useState({
     firstname: '',
@@ -33,38 +31,8 @@ const CustomerProfile = () => {
     nominee: '',
     nomineerelation: '',
     username: '',
-    password: null
+    password: ''
   });
-
-  const getcustomer = async () => {
-    try {
-      const response = await getCustomerAPI(username);
-      setFormData({
-        ...formData,
-        firstname:response.data.firstname,
-        lastname:response.data.lastname ,
-        mobilenumber :response.data.phoneno,
-        email:response.data.email,
-        address:response.data.address.address,
-        state:response.data.address.state,
-        city :response.data.address.city,
-        pincode:response.data.address.pincode,
-        nominee :response.data.nominee.nomineename,
-        nomineerelation :response.data.nominee.nomineeRelation,
-        username: response.data.user.username,
-        // password: response.data.user.password
-        
-      })
-      console.log("customer data", response.data)
-    } catch (error) {
-      console.log("Error fetching customers:", error);
-    }
-  }
-
-  useEffect(() => {
-    getcustomer();
-  }, [])
-  
 
 
   const handleInputChange = (event) => {
@@ -83,13 +51,23 @@ const CustomerProfile = () => {
    typeof formData.pincode == 'undefined' || formData.pincode == null ||
    typeof formData.nominee == 'undefined' || formData.nominee == null ||
    typeof formData.nomineerelation == 'undefined' || formData.nomineerelation == null ||
-   typeof formData.username == 'undefined' || formData.username == null 
-  //  typeof formData.password == 'undefined' || formData.password == null
+   typeof formData.username == 'undefined' || formData.username == null ||
+   typeof formData.password == 'undefined' || formData.password == null
   )
   {
+    // Swal.fire({  
+    //   title: "Fields are empty",
+    //   text: "Please fill the fields",
+    //   icon: "error",
+    //   confirmButtonText: "OK", 
+    // });
     alert("Feilds are empty")
     return;  
-  }
+    }
+    if(aadharCard == null || panCard == null || voterCard == null){
+    alert("Document Missing")
+      return;
+    }
     const namePattern = /^[A-Za-z][A-Za-z\s]*$/;
     const isValidfirstName = namePattern.test(formData.firstname);
     if(!isValidfirstName){
@@ -140,8 +118,7 @@ const CustomerProfile = () => {
       return;
     }
    try {
-    console.log("customerId", customerId);
-    let response = await axios.put(`http://localhost:8080/insurance-app/users/customer/${customerId}`,{
+    let response = await axios.post(`http://localhost:8080/insurance-app/users/customer`,{
     firstname: formData.firstname,
     lastname: formData.lastname,
     user:{
@@ -150,6 +127,7 @@ const CustomerProfile = () => {
     },
     email: formData.email,
     phoneno: formData.mobilenumber,
+    documentStatus: "Pending",
     address:{
         address: formData.address,
         city: formData.city,
@@ -161,15 +139,62 @@ const CustomerProfile = () => {
         nomineeRelation: formData.nomineerelation,
     }
     })
-    alert("Customer Updated Successfully")
+    setCustomerId(response.data.customerid)
+    let customeridvar = response.data.customerid;
+
+    console.log(response.data)
+    await uploadDocuments(aadharCard, customeridvar)
+    await uploadDocuments(panCard, customeridvar)
+    await uploadDocuments(voterCard, customeridvar)
+    alert("Customer Registered Successfully")
    } catch (error) { 
-    alert("Error in updating")
+    alert("Error in registering")
     console.log(error);
     return;
    }
     
+    
   };
 
+  const handleAadhar = (event) =>{
+    setAadharCard(event.target.files[0]);
+  }
+  const handlePan = (event) =>{
+    setPanCard(event.target.files[0]);
+  }
+  const handleVoter = (event) =>{
+    setVoterCard(event.target.files[0]);
+  }
+
+  const uploadDocuments = async (file, customeridvariable) =>{
+    if(file == null){
+    //   Swal.fire({  
+    //     title: "Document missing",
+    //     text: "Please upload all documents",
+    //     icon: "error",
+    //     confirmButtonText: "OK", 
+    //   });  
+    alert("Document Missing")
+      return;
+    }
+    const form = new FormData();
+    form.append('file', file);
+
+    try {
+      console.log("customer id: ",customerId);
+      const response = await fetch(`http://localhost:8080/insurance-app/customer/document/upload/${customeridvariable}`, {
+        method: 'POST',
+        body: form,
+      });
+
+      // Handle the response from the server as needed
+      console.log('Upload successful:', response);
+     
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+    
+  }
 
   return (
    <>
@@ -188,9 +213,10 @@ const CustomerProfile = () => {
         <input type="email" name="email" value={formData.email}  placeholder="Email" onChange={handleInputChange} /><br />
         </div>
 
+
         <div  className="name-inputs"> 
         
-        <select name="state" value={formData.state}  onChange={handleInputChange}>
+        <select name="state" value={formData.state}  onChange={handleInputChange} >
           <option value="" disabled>Select Your state</option>
           {IndianStates.map(state => (
             <option key={state} value={state}>{state}</option>
@@ -226,16 +252,32 @@ const CustomerProfile = () => {
         <textarea name="address" value={formData.address}   placeholder="Address"  onChange={handleInputChange} rows="2" ></textarea><br />
         
         </div>
+        <hr></hr><br></br>
+        <h2>Upload Documents</h2><br></br>
+        <div className=''>
+          <div className=''>
+          <Form.Label>Aadhar Card</Form.Label><br></br>
+          <input type="file" onChange={handleAadhar} />
+          </div>
+          <div className=''>
+          <Form.Label>Pan Card</Form.Label><br></br>
+          <input type="file" onChange={handlePan} /> 
+          </div>
+          <div className=''>
+          <Form.Label>Voter Card</Form.Label><br></br>
+          <input type="file" onChange={handleVoter} /> 
+          </div>
+          
+        </div>
   
         
       </form>
-      <button style={{marginLeft:'40%'}} className='button' type="submit" onClick={handleSubmit}>Save</button>
+      <button style={{marginLeft:'40%'}} className='button' type="submit" onClick={handleSubmit}>Register</button>
       </div>
     </div>
     
     </>
   )
-}
+          }
 
-
-export default CustomerProfile
+export default RegisterCustomer

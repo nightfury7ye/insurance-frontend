@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Table from '../../../shared/table/Table';
 import { getPaymentsApi, getPolicyApi } from '../../../service/CustomerApis';
 
-const ViewpolicyDetails = ({policyDetailsGlobal}) => {
+const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) => {
     console.log("inside ViewpolicyDetails: ",policyDetailsGlobal);
     const token = localStorage.getItem("auth");
     const [policyData, setPolicyData] = useState({})
@@ -62,8 +62,16 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
         }
       }, []);
 
-      const payment = () => {
+      const payment = (data) => {
         alert(`You have successfully paid the amount of for Policy No :${policyDetailsGlobal?.policyno}`);
+        setPayment({
+          ...payment ,
+          paymentid: data.paymentid,
+          paymentType: ''
+        })
+        moduleNameSetter("payment_page")
+        console.log(data.paymentid, data.paymenttype);
+        console.log(policyDetailsGlobal);
       }
 
     let i = 0
@@ -83,6 +91,22 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
             </>
         )
       }
+
+      let rowDataElements = paymentDto.map((data, index) =>{
+        return(
+            <tr>
+                <td>{index}</td>
+                <td>{data.paymenttype != null ? data.paymenttype: "-" }</td>
+                <td>{data.amount}</td>
+                <td>{data.date}</td>
+                <td>{data.tax}</td>
+                <td>{data.totalpayment}</td>
+                <td>{data.status.statusname == "pending" && paymentDto[index - 1].status.statusname == 
+                "paid" ? <><button onClick={() => payment(data)} className='btn btn-primary'>Pay</button></>
+                :<>{data.status.statusname}</>}</td>                
+            </tr>
+        )
+    })
 
       const tableAccountHeaders = ["ID",
                                     "Payment Type",
@@ -135,13 +159,32 @@ const ViewpolicyDetails = ({policyDetailsGlobal}) => {
             <div className='col' style={{marginTop: '3rem'}}>
             <h6 style={{marginLeft:'10px', textAlign: 'center'}}>Payment Details</h6>
 
-                <Table
+                {/* <Table
                 headers={tableAccountHeaders}
                 data={paymentDto}
                 enableUpdate={false}
                 enableDelete={false}
                 extraFunction={payButton}
-                />
+                /> */}
+
+                <div className='table-container'>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Payment Type</th>
+                            <th>Amount</th>
+                            <th>pay Date</th>
+                            <th>Tax</th>
+                            <th>Total Payment</th>
+                            <th>Payment status</th>
+                        </tr>
+                    </thead>
+                <tbody >
+                {rowDataElements}
+            </tbody>
+            </table>
+        </div>
             </div>
         </div>
     )

@@ -35,13 +35,17 @@ const Login = () => {
           navigation(`/agentdashboard`)
           console.log("After User navigate");
         }
-        alert('Login Successfull !!!', response.result);
+        // alert('Login Successfull !!!', response.result);
         console.log(response);
     } catch (error) {
       console.log(error);
       alert('Invalid Login Credentials !!!');
     }
   };
+
+  const register = () => {
+    navigation('/register')
+  }
 
   return (
     <div className="container mt-5 d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
@@ -88,6 +92,8 @@ const Login = () => {
             </button>
           </div>
         </div>
+        <br/>
+        <a style={{color: 'blue', marginTop: 5}} onClick={() => register()}>Register Customer</a>
       </div>
     </div>
   );

@@ -1,0 +1,76 @@
+
+   
+   .name-inputs {
+     display: flex;
+     gap: 30px; 
+     margin-bottom: 5px;
+     align-items: center;
+     justify-content: center;
+   }
+
+   .documents{
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px; 
+    text-align: center;
+    margin-top: 10px;
+   }
+   
+   
+   h1 {
+     text-align: center;
+     color:#0056b3;
+     margin-bottom: 20px;
+   }
+
+   h2{
+    text-align: center;
+     color:#0056b3;
+   }
+   
+   form label {
+     font-weight: bold;
+     
+   }
+   
+   form input,
+   form textarea,
+   form select {
+     width: 100%;
+     padding: 10px;
+     margin-bottom: 15px;
+     border: 1px solid #ccc;
+     border-radius: 5px;
+     font-size: 16px;
+   }
+
+   form textarea{
+    height: 150px;
+   }
+   
+   form button {
+     display: block;
+     width: 100%;
+     padding: 10px;
+     background-color: #007bff;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+     font-size: 16px;
+     transition: background-color 0.3s;
+   }
+   
+   form button:hover {
+     background-color: #0056b3;
+   }
+
+   .docBack{
+    background: rgb(184,255,233);
+    background: linear-gradient(90deg, rgba(184,255,233,1) 31%, rgba(173,247,210,1) 56%, rgba(162,250,139,1) 100%);
+    padding: 10px 20px;
+  }
+   
+   

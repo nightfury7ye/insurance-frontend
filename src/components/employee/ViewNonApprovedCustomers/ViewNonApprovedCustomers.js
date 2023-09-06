@@ -66,12 +66,9 @@ const ViewNonApprovedCustomers = () => {
     };
   
     const handleDeleteCustomer = async (customer) => {
-      // Check the current status and update accordingly
       if (customer.userstatus.statusid === 1) {
-        // If status is active, set it to disabled
         updateCustomerStatus(customer.customerid, 2);
       } else if (customer.userstatus.statusid === 2) {
-        // If status is disabled, set it to active
         updateCustomerStatus(customer.customerid, 1);
       }
     };

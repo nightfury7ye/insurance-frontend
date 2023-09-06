@@ -44,6 +44,9 @@ const rowDataElements = data.map((objectValue, index) => {
             {props.extraFunction ?
             <td className='text-center'>{props.extraFunction(objectValue)}</td>
             : null}
+            {props.viewDoc ?
+            <td className='text-center'>{props.viewDoc(index)}</td>
+            : null}
         </tr>
     )
 })
