@@ -119,7 +119,7 @@ const ViewScheme = ({planid, setPlanid}) => {
     }
     const tableAccountHeaders = ["ID", 
                                 "scheme name", 
-                                "discription",
+                                "description",
                                 "min amount", 
                                 "max amount", 
                                 "min policy term", 
@@ -127,7 +127,7 @@ const ViewScheme = ({planid, setPlanid}) => {
                                 "min age",
                                 "max age",
                                 "profit ratio",
-                                "registration comm ratio",
+                                "commission ratio",
                                 // "installment comm ratio",
                                 "status"]
     console.log(planid);
