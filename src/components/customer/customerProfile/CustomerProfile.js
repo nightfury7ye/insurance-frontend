@@ -174,7 +174,7 @@ const CustomerProfile = () => {
   return (
    <>
     <div className='main-card my-5'>
-      <h1 className='text-center'>Customer Registration Form</h1>
+      <h1 className='text-center'>Customer Profile</h1>
       <div className=''>
       <hr></hr>
       <form  >
