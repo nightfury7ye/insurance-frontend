@@ -91,10 +91,10 @@ export const updateSchemeApi = async (schemeid,schemeDto,token) => {
     return response
 }
 
-export const getAdminAPI = async (adminid) => {
+export const getAdminAPI = async (username) => {
     const response = await axios.get(`http://localhost:8080/insurance-app/users/admin`,{
       params: {
-          adminid: adminid,
+          username: username,
       }
     });
     return response
