@@ -29,6 +29,11 @@ export const approveCommissionApi = async (commissionid, token) => {
   });
 };
 
-export const getEmployeeAPI = async (employeeid) => {
-  await axios.get(`http://localhost:8080/insurance-app/users/employee/${employeeid}`);
+export const getEmployeeAPI = async (username) => {
+  const response = await axios.get(`http://localhost:8080/insurance-app/users/employee`,{
+    params: {
+        username: username,
+    }
+  });
+  return response
 };
