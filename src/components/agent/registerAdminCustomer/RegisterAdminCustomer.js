@@ -12,7 +12,7 @@ const IndianStates = [
   
 ];
 
-const RegisterCustomer = () => {
+const RegisterAdminCustomer = ({agentid}) => {
 
     const [aadharCard, setAadharCard] = useState(null);
     const [panCard, setPanCard] = useState(null);
@@ -280,4 +280,4 @@ const RegisterCustomer = () => {
   )
 }
 
-export default RegisterCustomer
+export default RegisterAdminCustomer

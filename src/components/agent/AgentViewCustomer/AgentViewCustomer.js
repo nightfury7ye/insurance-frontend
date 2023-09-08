@@ -47,6 +47,10 @@ const AgentViewCustomer = ({moduleNameSetter}) => {
         getAgentCustomers();
     }, [curPageNo, size]);
   
+    const addCustomer = () => {
+      moduleNameSetter("add_customer")
+    }
+
     const handlePageChange = async (clickValue) => {
       if (clickValue === "prev" && curPageNo > 1)
         setCurPageNo(curPageNo - 1);
@@ -110,7 +114,7 @@ const AgentViewCustomer = ({moduleNameSetter}) => {
               <option value="12">12</option>
             </select>
             <div className='col-md-4'>
-                <button className="btn btn-primary" onClick={() => {}}>
+                <button className="btn btn-primary" onClick={() => addCustomer()}>
                 Add Customer
                 </button>
             </div>

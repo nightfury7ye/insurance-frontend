@@ -44,7 +44,7 @@ export const addSchemeApi = async (schemeDto, planid, token) => {
         {
             scheme_name: schemeDto.scheme_name,
             schemeDetails: {
-                discription: schemeDto.discription,
+                discription: schemeDto.description,
                 min_amount: schemeDto.min_amount,
                 max_amount: schemeDto.max_amount,
                 min_invest_time: schemeDto.min_invest_time,
@@ -70,7 +70,7 @@ export const updateSchemeApi = async (schemeid,schemeDto,token) => {
     {
         scheme_name: schemeDto.scheme_name,
         schemeDetails: {
-            discription: schemeDto.discription,
+            discription: schemeDto.description,
             min_amount: schemeDto.min_amount,
             max_amount: schemeDto.max_amount,
             min_invest_time: schemeDto.min_invest_time,

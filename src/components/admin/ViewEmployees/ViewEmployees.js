@@ -77,6 +77,29 @@ const ViewEmployees = () => {
   };
 
   const addEmployee = async () => {
+    if (
+      !employeeDto.firstname ||
+      !employeeDto.lastname ||
+      isNaN(employeeDto.salary) ||
+      !employeeDto.username ||
+      !employeeDto.password
+    ) {
+      alert("All fields are required.");
+      return;
+    }
+  
+    if (employeeDto.salary <= 0) {
+      alert("Salary should be a positive number.");
+      return;
+    }
+
+    if (
+      !/[a-zA-Z]/.test(employeeDto.firstname ) ||
+      !/[a-zA-Z]/.test(employeeDto.lastname) ){
+      alert("Scheme name should contain mixed case letters.");
+      return;
+    }
+  
     try {
       const response = await addEmployeeApi(token, employeeDto);
       getEmployees();

@@ -92,6 +92,30 @@ const ViewAgents = () => {
   };
 
   const addAgent = async () => {
+    if (
+      !agentDto.firstname ||
+      !agentDto.lastname ||
+      !agentDto.qualification ||
+      isNaN(agentDto.commision) ||
+      !agentDto.username ||
+      !agentDto.password
+    ) {
+      alert("All fields are required.");
+      return;
+    }
+  
+    if (agentDto.commision <= 0) {
+      alert("Salary should be a positive number.");
+      return;
+    }
+
+    if (
+      !/[a-zA-Z]/.test(agentDto.firstname ) ||
+      !/[a-zA-Z]/.test(agentDto.lastname) ){
+      alert("Scheme firstname and lastname contains only letters.");
+      return;
+    }
+
     try {
       const response = await addAgentApi(agentDto)
 
@@ -108,7 +132,7 @@ const ViewAgents = () => {
     "First Name",
     "Last Name",
     "Qualification",
-    "Commision(Rs)",
+    "Commission(Rs)",
     "Username",
   ];
 

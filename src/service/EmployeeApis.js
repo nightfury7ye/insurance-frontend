@@ -29,10 +29,6 @@ export const approveCommissionApi = async (commissionid, token) => {
   });
 };
 
-export const getEmployeeAPI = async (employeeid,token) => {
-  await axios.get(`http://localhost:8080/insurance-app/users/employee/${employeeid}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getEmployeeAPI = async (employeeid) => {
+  await axios.get(`http://localhost:8080/insurance-app/users/employee/${employeeid}`);
 };

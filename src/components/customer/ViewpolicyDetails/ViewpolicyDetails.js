@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Table from '../../../shared/table/Table';
-import { getPaymentsApi, getPolicyApi } from '../../../service/CustomerApis';
+import { getPaymentsApi, getPolicyApi, installmentPaymentApi } from '../../../service/CustomerApis';
+import { Button, Form, Modal } from 'react-bootstrap'
 
 const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) => {
     console.log("inside ViewpolicyDetails: ",policyDetailsGlobal);
@@ -9,6 +10,12 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
     const [policyData, setPolicyData] = useState({})
     const [insuranceScheme, setInsuranceScheme] = useState({})
     const [paymentDto, setPaymentDto] = useState([])
+    const [accountNumber, setAccountNumber] = useState()
+    const [paymentType, setPaymentType] = useState('')
+    const [ifscCode, setIfscCode] = useState()
+    const [paymentid, setPaymentid] = useState()
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
     // let paymentButton = true
     const [paymentButton, setPaymentButton] = useState(true)
 
@@ -63,13 +70,10 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
       }, []);
 
       const payment = (data) => {
-        alert(`You have successfully paid the amount of for Policy No :${policyDetailsGlobal?.policyno}`);
-        setPayment({
-          ...payment ,
-          paymentid: data.paymentid,
-          paymentType: ''
-        })
-        moduleNameSetter("payment_page")
+        // alert(`You have successfully paid the amount of for Policy No :${policyDetailsGlobal?.policyno}`);
+        setPaymentid(data.paymentid)
+        // moduleNameSetter("payment_page")
+        setShow(true)
         console.log(data.paymentid, data.paymenttype);
         console.log(policyDetailsGlobal);
       }
@@ -90,6 +94,33 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
             <td className='text-center'>-</td>
             </>
         )
+      }
+
+      const withdraw = async () =>{
+        if(typeof accountNumber == 'undefined' || accountNumber == ''
+        || typeof ifscCode == 'undefined' || ifscCode == '' || typeof paymentType == 'undefined' || paymentType == ''){ 
+          alert("Please fill all the fields")
+          return
+        }
+        const isValidAccountNumber = /^[1-9]\d*$/.test(accountNumber);
+        if(!isValidAccountNumber){
+          alert("Incorrect Account Number")
+          return
+        }
+    
+        const isValidIFSCCode = /^[a-zA-Z0-9]+$/.test(ifscCode);
+        if(!isValidIFSCCode){
+          alert("Incorrect Ifsc code") 
+          return
+        }
+        try {
+            await installmentPaymentApi(paymentid, paymentType, token);
+            alert("Withdraw request sent successfully")
+            setShow(false)
+            getPayments()
+        } catch (error) {
+            console.log(error);
+        }
       }
 
       let rowDataElements = paymentDto.map((data, index) =>{
@@ -179,13 +210,44 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
                             <th>Total Payment</th>
                             <th>Payment status</th>
                         </tr>
-                    </thead>
-                <tbody >
-                {rowDataElements}
-            </tbody>
-            </table>
-        </div>
+                      </thead>
+                    <tbody >
+                    {rowDataElements}
+                  </tbody>
+                </table>
+                </div>
             </div>
+            <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Withdrawal payment Details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Form.Group >
+                  <div className="payment-box">
+                      <label>Payment Type:</label>
+                      <select className="form-select" name="paymentType" onChange={(e) => setPaymentType(e.target.value)} value={paymentType}>
+                          <option value="">Select Payment Type</option>
+                          <option value="Credit Card">Credit Card</option>
+                          <option value="Debit Card">Debit Card</option>
+                      </select>
+                  </div> 
+                  <Form.Label>Account Number</Form.Label>
+                  <Form.Control type="text" onChange={(e) => setAccountNumber(e.target.value)}
+                  />
+                  <Form.Label>IFSC Code</Form.Label>
+                  <Form.Control type="text" onChange={(e) => setIfscCode(e.target.value)}
+                  />       
+              </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={withdraw}>
+                Save
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
     )
 }
