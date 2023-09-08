@@ -4,7 +4,7 @@ import Table from '../../../shared/table/Table';
 import Pagination from '../../../shared/table/Pagination';
 import axios from 'axios';
 import { getschemes } from '../../../service/CustomerApis';
-import { addSchemeApi, updatePlanApi } from '../../../service/AdminApis';
+import { addSchemeApi, updatePlanApi, updateSchemeApi } from '../../../service/AdminApis';
 
 const ViewScheme = ({planid, setPlanid}) => {
     const location = useLocation();
@@ -14,7 +14,7 @@ const ViewScheme = ({planid, setPlanid}) => {
     const token = localStorage.getItem("auth")
     const [schemeDto, setSchemeDto] = useState({
         scheme_name: "",
-        discription: "",
+        description: "",
         min_amount: 0.0,
         max_amount: 0.0,
         min_invest_time: 0,
@@ -57,20 +57,134 @@ const ViewScheme = ({planid, setPlanid}) => {
     }
 
     const addScheme = async () => {
-        let response = await addSchemeApi(schemeDto, planid, token)
-            getschemesData()
-            // setSchemename("")
-        alert(`Scheme added successfully`)
+        if (!schemeDto.scheme_name || !schemeDto.description) {
+            alert("Scheme name and description are required fields.");
+            return;
+        }
+
+        if (schemeDto.min_age >= schemeDto.max_age) {
+            alert("Minimum age should be less than Maximum age.");
+            return;
+        }
+
+        if (schemeDto.min_amount >= schemeDto.max_amount) {
+            alert("Minimum amount should be less than Maximum amount.");
+            return;
+        }
+
+        if (schemeDto.min_invest_time >= schemeDto.max_invest_time) {
+            alert("Minimum investment time should be less than Maximum investment time.");
+            return;
+        }
+
+        if (schemeDto.registrationcommratio < 2 || schemeDto.registrationcommratio > 15) {
+            alert("Registration Commission Ratio should be between 2 and 15.");
+            return;
+        }
+        if (schemeDto.profit_ratio < 0) {
+            alert("Profit Ratio should be a positive number.");
+            return;
+          }
+        
+          if (
+            isNaN(schemeDto.min_amount) ||
+            isNaN(schemeDto.max_amount) ||
+            isNaN(schemeDto.profit_ratio) ||
+            schemeDto.min_amount < 0 ||
+            schemeDto.max_amount < 0
+          ) {
+            alert("Amount fields and Profit Ratio should be numeric values.");
+            return;
+          }
+        
+          if (
+            !Number.isInteger(schemeDto.min_invest_time) ||
+            !Number.isInteger(schemeDto.max_invest_time) ||
+            schemeDto.min_invest_time < 0 ||
+            schemeDto.max_invest_time < 0
+          ) {
+            alert("Investment time fields should be positive integers.");
+            return;
+          }
+          if (
+            !/[a-zA-Z]/.test(schemeDto.scheme_name)) {
+            alert("Scheme name should contain mixed case letters.");
+            return;
+          }
+
+          try {
+            let response = await addSchemeApi(schemeDto, planid, token);
+            getschemesData();
+            alert("Scheme added successfully");
+          } catch (error) {
+            alert("Error adding scheme: " + error.message);
+          }
     }
+    
 
     const updateScheme = async () => {
+        if (!schemeDto.scheme_name || !schemeDto.description) {
+            alert("Scheme name and description are required fields.");
+            return;
+        }
+
+        if (schemeDto.min_age >= schemeDto.max_age) {
+            alert("Minimum age should be less than Maximum age.");
+            return;
+        }
+
+        if (schemeDto.min_amount >= schemeDto.max_amount) {
+            alert("Minimum amount should be less than Maximum amount.");
+            return;
+        }
+
+        if (schemeDto.min_invest_time >= schemeDto.max_invest_time) {
+            alert("Minimum investment time should be less than Maximum investment time.");
+            return;
+        }
+
+        if (schemeDto.registrationcommratio < 2 || schemeDto.registrationcommratio > 15) {
+            alert("Registration Commission Ratio should be between 2 and 15.");
+            return;
+        }
+        if (schemeDto.profit_ratio < 0) {
+            alert("Profit Ratio should be a positive number.");
+            return;
+          }
+        
+          if (
+            isNaN(schemeDto.min_amount) ||
+            isNaN(schemeDto.max_amount) ||
+            isNaN(schemeDto.profit_ratio) ||
+            schemeDto.min_amount < 0 ||
+            schemeDto.max_amount < 0
+          ) {
+            alert("Amount fields and Profit Ratio should be numeric values.");
+            return;
+          }
+        
+          if (
+            !Number.isInteger(schemeDto.min_invest_time) ||
+            !Number.isInteger(schemeDto.max_invest_time) ||
+            schemeDto.min_invest_time < 0 ||
+            schemeDto.max_invest_time < 0
+          ) {
+            alert("Investment time fields should be positive integers.");
+            return;
+          }
+          if (
+            !/[a-zA-Z]/.test(schemeDto.scheme_name)) {
+            alert("Scheme name should contain Only Letters.");
+            return;
+          }
         try {
-            let response = await updatePlanApi(schemeid, schemeDto, token)
+            let response = await updateSchemeApi(schemeid, schemeDto, token)
+            alert(`update successfull ${schemeDto.scheme_name}`)
             getschemesData()
             setSchemeid()
         } catch (error) {
-            console.log(`Error deleting ${schemeDto.scheme_name}:`, error);
-            alert(`Error deleting ${schemeDto.scheme_name}:`)
+            console.log(`Error updating ${schemeDto.scheme_name}:`, error);
+            alert(`Error updating ${schemeDto.scheme_name}`)
         }
     }
 
@@ -88,7 +202,7 @@ const ViewScheme = ({planid, setPlanid}) => {
         setSchemeid(schemeObject.schemeid)
         setSchemeDto({
             scheme_name: schemeObject.scheme_name,
-            discription: schemeObject.schemeDetails.discription,
+            description: schemeObject.schemeDetails.discription,
             min_amount: schemeObject.schemeDetails.min_amount,
             max_amount: schemeObject.schemeDetails.max_amount,
             min_invest_time: schemeObject.schemeDetails.min_invest_time,
@@ -97,14 +211,13 @@ const ViewScheme = ({planid, setPlanid}) => {
             max_age: schemeObject.schemeDetails.max_age,
             profit_ratio: schemeObject.schemeDetails.profit_ratio,
             registrationcommratio: schemeObject.schemeDetails.registrationcommratio,
-            // installmentcommratio: schemeObject.schemeDetails.installmentcommratio,
             status: schemeObject.status.statusid
         });
     }
     const refreshScheme = () => {
         setSchemeDto({
             scheme_name: "",
-            discription: "",
+            description: "",
             min_amount: 0.0,
             max_amount: 0.0,
             min_invest_time: 0,
@@ -113,13 +226,12 @@ const ViewScheme = ({planid, setPlanid}) => {
             max_age: 0,
             profit_ratio: 0,
             registrationcommratio: 0,
-            // installmentcommratio: 0,
             status: 1
         })
     }
     const tableAccountHeaders = ["ID", 
                                 "scheme name", 
-                                "discription",
+                                "description",
                                 "min amount", 
                                 "max amount", 
                                 "min policy term", 
@@ -127,7 +239,7 @@ const ViewScheme = ({planid, setPlanid}) => {
                                 "min age",
                                 "max age",
                                 "profit ratio",
-                                "registration comm ratio",
+                                "commission ratio",
                                 // "installment comm ratio",
                                 "status"]
     console.log(planid);

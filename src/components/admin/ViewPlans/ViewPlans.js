@@ -52,6 +52,10 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
     }
 
     const addPlan = async () => {
+        if (!planname) {
+            alert("Plan name is required field.");
+            return;
+        }
         const response = await addPlanApi(token, planname)
             getplansData()
             setPlanname("")
@@ -59,6 +63,10 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
     }
 
     const updatePlan = async () => {
+        if (!planname) {
+            alert("Plan name is required field.");
+            return;
+        }
         let response = await updatePlanApi(token, planid, planname)
         getplansData()
         setPlanid()

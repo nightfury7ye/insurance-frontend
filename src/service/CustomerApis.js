@@ -56,6 +56,17 @@ export const firstPaymentApi = async (policyno, paymentData) => {
       });
       return response
 }
+export const installmentPaymentApi = async (paymentid, paymentType, token) => {
+  console.log("Payment data",paymentid, paymentType);
+    const response = await axios.post(`http://localhost:8080/insurance-app/policy/payment/${paymentid}`, {
+        paymenttype: paymentType
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+  });
+  return response
+}
 
 export const getCustomerAPI = async (username) => {
       const response = await axios.get(`http://localhost:8080/insurance-app/users/customer`,{
@@ -122,6 +133,9 @@ export const addEmployeeApi = async (token, employeeDto) => {
           password: employeeDto.password,
         },
       }, {
+        params: {
+          statusid: 1,
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },

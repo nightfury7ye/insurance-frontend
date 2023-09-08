@@ -5,7 +5,7 @@ const AgentProfile = () => {
 return(
 
   <div>
-    <AgentProfile/>
+    {/* <AgentProfile/> */}
   </div> 
   )
 }

@@ -6,7 +6,7 @@ import { getEmployeeAPI } from '../../../service/EmployeeApis';
 
 const EmployeeProfile = () => {
 
-    const [employeeId, setEmployeeId] = useState(localStorage.getItem("employeeid"))
+    const employeeId = localStorage.getItem("employeeid")
     const username = localStorage.getItem("username")
  
   const [formData, setFormData] = useState({
@@ -18,6 +18,7 @@ const EmployeeProfile = () => {
 
   const getEmployee = async () => {
     try {
+      console.log(employeeId);
       const response = await getEmployeeAPI(employeeId);
       setFormData({
         ...formData,
@@ -89,7 +90,7 @@ const EmployeeProfile = () => {
   return (
    <>
     <div className='main-card my-5'>
-      <h1 className='text-center'>Customer Profile</h1>
+      <h1 className='text-center'>Employee Profile</h1>
       <div className=''>
       <hr></hr>
       <form  >

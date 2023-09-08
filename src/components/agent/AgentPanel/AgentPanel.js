@@ -11,6 +11,7 @@ import ConfirmPolicyDetails from '../../customer/ConfirmPolicyDetails/ConfirmPol
 import Payment from '../../../shared/Payment';
 import Commission from '../../commission/Commission';
 import AgentProfile from '../agentProfile/AgentProfile';
+import RegisterAdminCustomer from '../registerAdminCustomer/RegisterAdminCustomer';
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -24,6 +25,7 @@ const AgentPanel = () => {
     const [planid, setPlanid] = useState()
     const [schemeDto, setSchemeDto] = useState()
     const [policyDetailsGlobal, setPolicyDetailsGlobal] = useState()
+    const [agentid, setAgentid] = useState()
 
     const getagent = async () => {
         try {
@@ -89,6 +91,10 @@ const AgentPanel = () => {
                     {moduleName === "view_profile" &&
                     <AgentProfile
                     moduleNameSetter = {setModuleName}/>
+                    }
+                    {moduleName === "add_customer" &&
+                    <RegisterAdminCustomer
+                    agentid = {agentid}/>
                     }
                 </div>
             </div>
