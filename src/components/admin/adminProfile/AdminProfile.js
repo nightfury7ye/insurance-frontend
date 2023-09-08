@@ -13,21 +13,17 @@ const AdminProfile = () => {
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
-    email: '',
-    mobilenumber: '',
     username: '',
     password: null
   });
 
   const getAdmin = async () => {
     try {
-      const response = await getAdminAPI(username);
+      const response = await getAdminAPI(adminId);
       setFormData({
         ...formData,
         firstname:response.data.firstname,
         lastname:response.data.lastname ,
-        email:response.data.email,
-        mobilenumber :response.data.phoneno,
         username: response.data.user.username,
         // password: response.data.user.password
         
@@ -52,8 +48,6 @@ const AdminProfile = () => {
   const handleSubmit = async () => {
    if(typeof formData.firstname == 'undefined' || formData.firstname == null ||
    typeof formData.lastname == 'undefined' || formData.lastname == null ||
-   typeof formData.email == 'undefined' || formData.email == null ||
-   typeof formData.mobilenumber == 'undefined' || formData.mobilenumber == null ||
    typeof formData.username == 'undefined' || formData.username == null 
   //  typeof formData.password == 'undefined' || formData.password == null
   )
@@ -72,24 +66,12 @@ const AdminProfile = () => {
         alert("Invalid Last Name")
         return;
     }
-    const isValidMobileNumber = /^[0-9]{10}$/.test(formData.mobilenumber);
-    if(! isValidMobileNumber){
-    alert("Invalid Phone number")
-      return;
-    }
-    const mailCheck = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
-    if(!mailCheck){ 
-    alert("Invalid Email")
-      return;
-    }
 
    try {
     console.log("adminId", adminId);
     let response = await axios.put(`http://localhost:8080/insurance-app/users/admin/${adminId}`,{
     firstname: formData.firstname,
     lastname: formData.lastname,
-    email: formData.email,
-    phoneno: formData.mobilenumber,
     user:{
         username: formData.username,
         password: formData.password
@@ -114,17 +96,13 @@ const AdminProfile = () => {
       <form  >
         <div  className="name-inputs"> 
          <input type="text" name="firstname" value={formData.firstname}  placeholder="First Name" onChange={handleInputChange} /><br />
-          <input type="text" name="lastname" value={formData.lastname}  placeholder="Last Name" onChange={handleInputChange} /><br /> 
+        <input type="text" name="lastname" value={formData.lastname}  placeholder="Last Name" onChange={handleInputChange} /><br /> 
         </div>
    
         <div  className="name-inputs"> 
-          <input type="tel" name="mobilenumber" value={formData.mobilenumber}  placeholder="Contact Number" onChange={handleInputChange}  /><br />
-          <input type="email" name="email" value={formData.email}  placeholder="Email" onChange={handleInputChange} /><br />
-        </div>
+        <input type="text" name="username" value={formData.username}   placeholder="Username" onChange={handleInputChange}  /><br />
 
-        <div  className="name-inputs"> 
-          <input type="text" name="username" value={formData.username}   placeholder="Username" onChange={handleInputChange}  /><br />
-          <input name="password" value={formData.password}   placeholder="Password" onChange={handleInputChange}  /><br />
+        <input name="password" value={formData.password}   placeholder="Password" onChange={handleInputChange}  /><br />
         </div>
   
         
