@@ -180,12 +180,12 @@ const CustomerProfile = () => {
       <form  >
         <div  className="name-inputs"> 
          <input type="text" name="firstname" value={formData.firstname}  placeholder="First Name" onChange={handleInputChange} /><br />
-        <input type="text" name="lastname" value={formData.lastname}  placeholder="Last Name" onChange={handleInputChange} /><br /> 
+          <input type="text" name="lastname" value={formData.lastname}  placeholder="Last Name" onChange={handleInputChange} /><br /> 
         </div>
 
         <div  className="name-inputs"> 
-        <input type="tel" name="mobilenumber" value={formData.mobilenumber}  placeholder="Contact Number" onChange={handleInputChange}  /><br />
-        <input type="email" name="email" value={formData.email}  placeholder="Email" onChange={handleInputChange} /><br />
+          <input type="tel" name="mobilenumber" value={formData.mobilenumber}  placeholder="Contact Number" onChange={handleInputChange}  /><br />
+          <input type="email" name="email" value={formData.email}  placeholder="Email" onChange={handleInputChange} /><br />
         </div>
 
         <div  className="name-inputs"> 
@@ -200,33 +200,23 @@ const CustomerProfile = () => {
         </div>
 
         <div  className="name-inputs"> 
-        <input type="text" name="city" value={formData.city}   placeholder="City" onChange={handleInputChange} /><br />
-
-        {/* <label>Pincode:</label> */}
-        <input type="number" name="pincode" value={formData.pincode}   placeholder="Pincode" onChange={handleInputChange}/><br />
+          <input type="text" name="city" value={formData.city}   placeholder="City" onChange={handleInputChange} /><br />
+          <input type="number" name="pincode" value={formData.pincode}   placeholder="Pincode" onChange={handleInputChange}/><br />
         </div>
 
+        <div  className="name-inputs"> 
+          <input type="text" name="nominee" value={formData.nominee}   placeholder="Nominee" onChange={handleInputChange}  /><br />
+          <input type="text" name="nomineerelation" value={formData.nomineerelation}   placeholder="Nominee Relation" onChange={handleInputChange}  /><br />
+        </div>
+
+        <div  className="name-inputs"> 
+          <input type="text" name="username" value={formData.username}   placeholder="Username" onChange={handleInputChange}  /><br />
+          <input name="password" value={formData.password}   placeholder="Password" onChange={handleInputChange}  /><br />
+        </div>
         
-        {/* <label>Nominee:</label> */}
         <div  className="name-inputs"> 
-        <input type="text" name="nominee" value={formData.nominee}   placeholder="Nominee" onChange={handleInputChange}  /><br />
-
-        {/* <label>Nominee Relation:</label> */}
-        <input type="text" name="nomineerelation" value={formData.nomineerelation}   placeholder="Nominee Relation" onChange={handleInputChange}  /><br />
+          <textarea name="address" value={formData.address}   placeholder="Address"  onChange={handleInputChange} rows="2" ></textarea><br />
         </div>
-
-
-        <div  className="name-inputs"> 
-        <input type="text" name="username" value={formData.username}   placeholder="Username" onChange={handleInputChange}  /><br />
-
-        <input name="password" value={formData.password}   placeholder="Password" onChange={handleInputChange}  /><br />
-        </div>
-        <div  className="name-inputs"> 
-
-        <textarea name="address" value={formData.address}   placeholder="Address"  onChange={handleInputChange} rows="2" ></textarea><br />
-        
-        </div>
-  
         
       </form>
       <button style={{marginLeft:'40%'}} className='button' type="submit" onClick={handleSubmit}>Save</button>

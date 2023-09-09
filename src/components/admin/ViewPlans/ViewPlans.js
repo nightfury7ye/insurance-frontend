@@ -10,6 +10,7 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
     const [schemeData, setSchemeData] = useState([])
     const [planname, setPlanname] = useState()
     const [planid, setPlanid] = useState()
+    const [statusname, setStatusname]= useState()
     const token = localStorage.getItem("auth")
     const navigate = useNavigate();
 
@@ -42,9 +43,11 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
     const deletePlan = async (plan) => {
         console.log("plan: ", plan);
         const planid = plan.planid;
+        const statusid = 2;
         try {
-            let response = await deletePlanApi(token, planid)
+            let response = await deletePlanApi(token, planid, statusid)
             getplansData()
+            setStatusname('')
             alert(`plan deleted successfully`)
         } catch (error) {
             console.log(error);
@@ -83,7 +86,7 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
         setPlanid(planObject.planid)
         setPlanname(planObject.plan_name)
     }
-    const tableHeaders = ["ID", "plan name","View Schemes", "no. of schemes", "status"]
+    const tableHeaders = ["ID", "Plan Name","No. of Schemes","Status","View Schemes"]
   return (
       <div className='row align-items-center justify-content-center'>
             <div className="modal" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
