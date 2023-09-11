@@ -28,6 +28,7 @@ const CustomerProfile = () => {
     email: '',
     address: '',
     state: '',
+    dob:'',
     city: '',
     pincode: '',
     nominee: '',
@@ -47,6 +48,7 @@ const CustomerProfile = () => {
         email:response.data.email,
         address:response.data.address.address,
         state:response.data.address.state,
+        dob:response.data.dob,
         city :response.data.address.city,
         pincode:response.data.address.pincode,
         nominee :response.data.nominee.nomineename,
@@ -79,6 +81,7 @@ const CustomerProfile = () => {
    typeof formData.email == 'undefined' || formData.email == null ||
    typeof formData.address == 'undefined' || formData.address == null ||
    typeof formData.state == 'undefined' || formData.state == '' ||
+   typeof formData.dob == 'undefined' || formData.dob == '' ||
    typeof formData.city == 'undefined' || formData.city == null ||
    typeof formData.pincode == 'undefined' || formData.pincode == null ||
    typeof formData.nominee == 'undefined' || formData.nominee == null ||
@@ -107,6 +110,13 @@ const CustomerProfile = () => {
     if(!isValidcity){
     alert("Invalid City") 
         return;
+    }
+
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    const isValidDate = datePattern.test(formData.dob);
+    if(!isValidDate){
+      alert('Please Enter Valid Date');
+      return;
     }
 
     const nomineePattern = /^[A-Za-z][A-Za-z\s]*$/;
@@ -150,6 +160,7 @@ const CustomerProfile = () => {
     },
     email: formData.email,
     phoneno: formData.mobilenumber,
+    dob: formData.dob,
     address:{
         address: formData.address,
         city: formData.city,
@@ -206,6 +217,7 @@ const CustomerProfile = () => {
           ))}
         </select><br />
         
+        <input type="text" name="DOB" value={formData.dob}   placeholder="DOB" onChange={handleInputChange} /><br />
         </div>
 
         <div  className="name-inputs"> 
