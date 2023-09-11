@@ -26,6 +26,7 @@ const RegisterAdminCustomer = () => {
     email: '',
     address: '',
     state: '',
+    dob: '',
     city: '',
     pincode: '',
     nominee: '',
@@ -49,6 +50,7 @@ const RegisterAdminCustomer = () => {
    typeof formData.email == 'undefined' || formData.email == null ||
    typeof formData.address == 'undefined' || formData.address == null ||
    typeof formData.state == 'undefined' || formData.state == '' ||
+   typeof formData.dob == 'undefined' || formData.dob == '' ||
    typeof formData.city == 'undefined' || formData.city == null ||
    typeof formData.pincode == 'undefined' || formData.pincode == null ||
    typeof formData.nominee == 'undefined' || formData.nominee == null ||
@@ -81,6 +83,13 @@ const RegisterAdminCustomer = () => {
     if(!isValidcity){
     alert("Invalid City") 
         return;
+    }
+
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    const isValidDate = datePattern.test(formData.dob);
+    if(!isValidDate){
+      alert('Please Enter Valid Date');
+      return;
     }
 
     const nomineePattern = /^[A-Za-z][A-Za-z\s]*$/;
@@ -123,6 +132,7 @@ const RegisterAdminCustomer = () => {
     },
     email: formData.email,
     phoneno: formData.mobilenumber,
+    dob: formData.dob,
     documentStatus: "Pending",
     address:{
         address: formData.address,
@@ -213,6 +223,9 @@ const RegisterAdminCustomer = () => {
           ))}
         </select><br />
         
+         
+        <input type="text" name="city" value={formData.dob}   placeholder="DOB" onChange={handleInputChange} /><br />
+
         </div>
 
         <div  className="name-inputs"> 
