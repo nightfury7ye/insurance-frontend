@@ -11,6 +11,7 @@ import ConfirmPolicyDetails from '../ConfirmPolicyDetails/ConfirmPolicyDetails';
 import Payment from '../../../shared/Payment';
 import { getCustomerAPI } from '../../../service/CustomerApis';
 import CustomerProfile from '../customerProfile/CustomerProfile';
+import { useNavigate } from 'react-router-dom';
 
 
 const containerStyle={
@@ -19,6 +20,7 @@ const containerStyle={
   flexDirection: 'row'
 }
 const CustomerPanel = () => {
+  let navigation = useNavigate()
   const [moduleName, setModuleName] = useState("view_plan");
   const [planid, setPlanid] = useState()
   const [schemeDto, setSchemeDto] = useState()
@@ -26,6 +28,14 @@ const CustomerPanel = () => {
   const [policyDetailsGlobal, setPolicyDetailsGlobal] = useState()
   const [customer, setCustomer] = useState({})
   const username = localStorage.getItem('username')
+
+  useEffect(() => {
+    let role = localStorage.getItem("role")
+    if(role != "ROLE_CUSTOMER"){
+        localStorage.clear()
+        navigation(`/`)
+    }
+  }, [])
 
   const getcustomer = async () => {
     try {

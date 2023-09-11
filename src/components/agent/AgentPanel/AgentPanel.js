@@ -12,6 +12,7 @@ import Payment from '../../../shared/Payment';
 import Commission from '../../commission/Commission';
 import AgentProfile from '../agentProfile/AgentProfile';
 import RegisterAdminCustomer from '../registerAdminCustomer/RegisterAdminCustomer';
+import { useNavigate } from 'react-router-dom';
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -19,6 +20,7 @@ const containerStyle={
     flexDirection: 'row'
   }
 const AgentPanel = () => {
+  let navigation = useNavigate()
     const [moduleName, setModuleName] = useState("view_customers");
     const [agent, setAgent] = useState({})
     const username = localStorage.getItem('username')
@@ -26,6 +28,14 @@ const AgentPanel = () => {
     const [schemeDto, setSchemeDto] = useState()
     const [policyDetailsGlobal, setPolicyDetailsGlobal] = useState()
     const [agentid, setAgentid] = useState()
+
+    useEffect(() => {
+      let role = localStorage.getItem("role")
+      if(role != "ROLE_AGENT"){
+          localStorage.clear()
+          navigation(`/`)
+      }
+    }, [])
 
     const getagent = async () => {
         try {

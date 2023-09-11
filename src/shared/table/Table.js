@@ -1,10 +1,13 @@
 import React from 'react'
 import './Table.css'
+import EmptyCard from '../errorCards/emptyCard/EmptyCard';
 
 const Table = ({headers, data, enableUpdate, enableDelete, ...props}) => {
     console.log("ravi");
 console.log("Inside Table: ",data);
 const tableHeaders = headers;
+console.log("length: ",data.length);
+
 const rowDataElements = data.map((objectValue, index) => {
     return(
         <tr key={index}>
@@ -51,6 +54,7 @@ const rowDataElements = data.map((objectValue, index) => {
     )
 })
   return (
+    <>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -64,10 +68,16 @@ const rowDataElements = data.map((objectValue, index) => {
             :null}
             </tr>
         </thead>
+        {data.length !== 0 &&
         <tbody class="table-group-divider">
-            {rowDataElements}
+        {rowDataElements}
         </tbody>
+        }
     </table>
+    {data.length === 0 &&
+    <EmptyCard msg="The list is Empty"/>
+    }
+     </>
   )
 }
 

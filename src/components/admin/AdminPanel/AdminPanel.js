@@ -7,6 +7,7 @@ import ViewEmployees from '../ViewEmployees/ViewEmployees'
 import AdminProfile from '../adminProfile/AdminProfile'
 import AdminViewCustomer from '../adminViewCustomer/AdminViewCustomer'
 import ViewCustomersPolicies from '../viewCustomersPolicies/ViewCustomersPolicies'
+import { useNavigate } from 'react-router-dom'
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -14,9 +15,17 @@ const containerStyle={
     flexDirection: 'row'
 }
 const AdminPanel = () => {
+    let navigation = useNavigate()
     const [moduleName, setModuleName] = useState("view_plan");
     const [planid, setPlanid] = useState()
     const [customerid, setCustomerid] = useState()
+    useEffect(() => {
+        let role = localStorage.getItem("role")
+        if(role != "ROLE_ADMIN"){
+            localStorage.clear()
+            navigation(`/`)
+        }
+      }, [])
     useEffect(() => {
       console.log("PLAN IDDDD:",planid);
     }, [planid])

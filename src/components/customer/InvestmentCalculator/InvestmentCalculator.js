@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './InvestmentCalculator.css';
+import { getCustomerAPI } from '../../../service/CustomerApis';
 
 const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSetter }) => {
+    const username = localStorage.getItem('username')
+    const [customer, setCustomer] = useState({})
+    const [approvedCustomer, setApprovedCustomer] = useState(true)
     const [policyDetails, setPolicyDetails] = useState({
         years: '',
         investmentAmount: '',
@@ -11,6 +15,24 @@ const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSet
         totalInvestment: '',
         totalAmount: '',
       });
+
+      const getcustomer = async () => {
+        try {
+          const response = await getCustomerAPI(username);
+          setCustomer(response.data);
+          console.log("customer data", customer)
+          if(response.data.documentStatus != "Approved"){
+            setApprovedCustomer(false)
+          }
+
+        } catch (error) {
+          console.error("Error fetching schemes:", error);
+        }
+      }
+      useEffect(() => {
+        getcustomer()
+      }, [])
+      
     
       const handleCalculate = () => {
         const { years, investmentAmount, months } = policyDetails;
@@ -125,7 +147,9 @@ const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSet
             </div>
           </div>
           <div className='buy-plan-button'>
-            <button onClick={handleBuyPlan}>Buy Plan</button>
+            {approvedCustomer?
+            <button onClick={handleBuyPlan}>Buy Plan</button>:
+            <p>Sorry Your documents arent verified till now! come again later after approval</p>}
           </div>
         </div>
       );
