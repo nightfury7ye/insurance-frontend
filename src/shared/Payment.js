@@ -68,7 +68,13 @@ const Payment = ({policyDetailsGlobal, schemeDto, moduleNameSetter}) => {
         console.log(paymentData);
     };
 
+    const containerStyle = {
+        height: '715px',
+        overflow: 'scroll',
+    }
+
     return (
+        <div style={containerStyle}>
         <div className="payment-container">
             <div className='payment-header'>
                 <h2>Payment Gateway</h2>
@@ -112,6 +118,7 @@ const Payment = ({policyDetailsGlobal, schemeDto, moduleNameSetter}) => {
                     Pay
                 </button>
             </form>
+        </div>
         </div>
     );
 }

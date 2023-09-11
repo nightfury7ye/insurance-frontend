@@ -9,6 +9,7 @@ const AgentProfile = () => {
     
     const [agentId, setAgentId] = useState(localStorage.getItem("agentid"))
     const username = localStorage.getItem("username")
+    const token = localStorage.getItem("auth")
  
   const [formData, setFormData] = useState({
     firstname: '',
@@ -88,17 +89,22 @@ const AgentProfile = () => {
 
    try {
     console.log("agentId", agentId);
-    let response = await axios.put(`http://localhost:8080/insurance-app/users/agent/${agentId}`,{
+    let response = await axios.put(`http://localhost:8080/insurance-app/users/agent/${username}`,{
     firstname: formData.firstname,
     lastname: formData.lastname,
-    mobilenumber: formData.mobilenumber,
+    phoneno: formData.mobilenumber,
     email: formData.email,
     qualification: formData.qualification,
     user:{
         username: formData.username,
         password: formData.password
     },
-    })
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    )
     alert("Agent Updated Successfully")
    } catch (error) { 
     alert("Error in updating")

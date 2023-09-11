@@ -16,7 +16,7 @@ const ViewAgents = () => {
     firstname: "",
     lastname: "",
     qualification: "",
-    commision: 0.0,
+    // commision: 0.0,
     username: "",
     password: "",
   });
@@ -96,7 +96,7 @@ const ViewAgents = () => {
       !agentDto.firstname ||
       !agentDto.lastname ||
       !agentDto.qualification ||
-      isNaN(agentDto.commision) ||
+      // isNaN(agentDto.commision) ||
       !agentDto.username ||
       !agentDto.password
     ) {
@@ -104,10 +104,10 @@ const ViewAgents = () => {
       return;
     }
   
-    if (agentDto.commision <= 0) {
-      alert("Salary should be a positive number.");
-      return;
-    }
+    // if (agentDto.commision <= 0) {
+    //   alert("Salary should be a positive number.");
+    //   return;
+    // }
 
     if (
       !/[a-zA-Z]/.test(agentDto.firstname ) ||
@@ -141,7 +141,7 @@ const ViewAgents = () => {
       firstname: "",
       lastname: "",
       qualification: "",
-      commision: 0.0,
+      // commision: 0.0,
       username: "",
       password: "",
     });

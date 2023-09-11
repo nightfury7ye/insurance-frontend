@@ -25,7 +25,7 @@ const AgentViewCustomer = ({moduleNameSetter}) => {
           email: customer.email,
           phoneno: customer.phoneno,
           documentStatus: customer.documentStatus,
-          userstatus: customer.userstatus,
+          userstatus: customer.userStatus.statusname,
         }));
   
         setCustomerData(customerDtoArray);
@@ -71,7 +71,7 @@ const AgentViewCustomer = ({moduleNameSetter}) => {
 
     const getSchemes = async (customer) => {
         console.log("Hiee ",customer)
-        if(customer.documentStatus === "Pending"){
+        if(customer.documentStatus === "Approved"){
             localStorage.setItem("customerid", customer.customerid)
             // navigate("/viewscheme", { state: plan.planid })
             moduleNameSetter("view_plan")

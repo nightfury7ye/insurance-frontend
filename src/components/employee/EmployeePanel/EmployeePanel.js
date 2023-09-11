@@ -6,6 +6,7 @@ import ViewCustomers from '../../../shared/ViewCustomers/ViewCustomers';
 import ViewNonApprovedCustomers from '../ViewNonApprovedCustomers/ViewNonApprovedCustomers';
 import CommissionWithdrawals from '../commissionWithdrawals/CommissionWithdrawals';
 import EmployeeProfile from '../employeeProfile/EmployeeProfile';
+import ViewClaims from '../viewClaims/ViewClaims';
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -36,6 +37,9 @@ const EmployeePanel = () => {
                     }
                     {moduleName === "view_commission" &&
                     <CommissionWithdrawals moduleNameSetter = {setModuleName} />
+                    }
+                    {moduleName === "view_claims" &&
+                    <ViewClaims moduleNameSetter = {setModuleName} />
                     }
                     {moduleName === "view_profile" &&
                     <EmployeeProfile

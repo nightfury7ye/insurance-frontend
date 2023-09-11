@@ -117,7 +117,7 @@ export const getEmployeesApi = async (token, curPageNo, size) => {
 }
 
 export const deleteEmployeeApi = async (token,employeeid) => {
-    await axios.delete(`http://localhost:8080/insurance-app/users/employee/${employeeid}`, {
+    await axios.post(`http://localhost:8080/insurance-app/users/inactiveemployee/${employeeid}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -135,6 +135,22 @@ export const addEmployeeApi = async (token, employeeDto) => {
       }, {
         params: {
           statusid: 1,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+    });
+    return response
+}
+export const addClaimsApi = async (token, claimDto, accountNumber, ifscCode) => {
+    const response = await axios.post(`http://localhost:8080/insurance-app/claim`, {
+      claim_amount: claimDto.amount,
+      bank_accno: accountNumber,
+      bank_ifsc_code: ifscCode,
+      }, {
+        params: {
+          policyno: claimDto.policyno,
+          statusId: 1,
         },
         headers: {
           Authorization: `Bearer ${token}`,

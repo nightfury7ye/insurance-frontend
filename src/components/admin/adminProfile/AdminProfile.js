@@ -7,7 +7,7 @@ import { getAdminAPI } from '../../../service/AdminApis';
 
 const AdminProfile = () => {
 
-    const [adminId, setAdminId] = useState(localStorage.getItem("adminid"))
+    const [adminId, setAdminId] = useState()
     const username = localStorage.getItem("username")
  
   const [formData, setFormData] = useState({
@@ -30,8 +30,8 @@ const AdminProfile = () => {
         mobilenumber :response.data.phoneno,
         username: response.data.user.username,
         // password: response.data.user.password
-        
       })
+      setAdminId(response.data.adminid)
       console.log("Admin data", response.data)
     } catch (error) {
       console.log("Error fetching admins:", error);

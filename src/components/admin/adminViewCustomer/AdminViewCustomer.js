@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Pagination from '../table/Pagination';
-import Table from '../table/Table';
-import { customerApproveApi, getCustomersApi } from '../../service/EmployeeApis';
 import { Button, Modal } from 'react-bootstrap';
+import { getCustomersApi } from '../../../service/EmployeeApis';
+import Pagination from '../../../shared/table/Pagination';
+import Table from '../../../shared/table/Table';
 
-const ViewCustomers = () => {
+const AdminViewCustomer = ({moduleNameSetter, setCustomerid}) => {
   const token = localStorage.getItem("auth");
   const [customerData, setCustomerData] = useState([]);
   const [customerFullData, setCustomerFullData] = useState([]);
   const [curPageNo, setCurPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [size, setSize] = useState(4);
-  const [doc1, setDoc1] = useState()
-  const [doc2, setDoc2] = useState()
-  const [doc3, setDoc3] = useState()
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const [docStatus, setDocStatus] = useState()
-  const [customerid, setCustomerid] = useState()
-
 
   const getCustomers = async () => {
     try {
@@ -78,74 +70,18 @@ const ViewCustomers = () => {
     }
   };
 
-  const handleDownload = async (d) => {
-    try {
-      console.log("handleDownload d: ",d);
-      const response = await axios.get(`http://localhost:8080/insurance-app/customer/document/download/${d}`, {
-        responseType: 'blob',// Set the response type to 'blob' for binary data
-        
-      });
-
-      console.log(response.data)
-
-      // Create a blob URL from the response data
-      const blobUrl = URL.createObjectURL(new Blob([response.data]));
-
-      // Create a link element and simulate a click to trigger the download
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      let filename
-      if(d == 0){
-        filename = "Aadhar.pdf"
-      }
-      if(d == 1){
-        filename = "Pan.pdf"
-      }
-      if(d == 2){
-        filename = "Voter.pdf"
-      }
-      
-      link.download = filename; // Use the original file name
-      link.click();
-
-      // Clean up the blob URL after the download
-      URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.log('Error downloading file:', error);
+  const viewPolicies = (objectValue) => {
+    console.log("index from viewDocuments: ", objectValue);
+    setCustomerid(objectValue.customerid)
+    moduleNameSetter("view_policies")
+    // let customer = customerFullData.content[index]
     }
-}
 
-  const approve = async () => {
-    console.log(customerid);
-    try {
-      await customerApproveApi(customerid, token)
-      alert("Status Updated")
-      setShow(false)
-      getCustomers()
-    } catch (error) {
-      console.log("err: ",error);
-    }
-  }
-
-  const viewDocuments = (index) => {
-    console.log("index from viewDocuments: ", index);
-    let customer = customerFullData.content[index]
-    console.log("customer from viewDocuments: ", customer, customerFullData);
-    if(customer.documents){
-    setDoc1(customer?.documents[0]?.documentid)
-    setDoc2(customer?.documents[1]?.documentid)
-    setDoc3(customer?.documents[2]?.documentid)
-    setDocStatus(customer.documentStatus)
-    setCustomerid(customer.customerid)
-    setShow(true)
-    }
-  }
-
-  const viewDocumentButton = (index) => {
-      console.log("objectValue", index);
+  const viewPoliciesBtn = (objectValue) => {
+      console.log("objectValue", objectValue);
       return(
         <>
-        <button className="btn btn-secondary mb-3" onClick={() => {viewDocuments(index)}}>View Documents</button>
+        <button className="btn btn-secondary mb-3" onClick={() => {viewPolicies(objectValue)}}>View Policies</button>
         </>
       )
   }
@@ -174,6 +110,7 @@ const ViewCustomers = () => {
     "Phone No",
     "Document Status",
     "User Status",
+    "View policies"
   ];
 
   return (
@@ -187,7 +124,6 @@ const ViewCustomers = () => {
             onChange={handleSizeChange}
             className='form-select'
           >
-            <option value="1">1</option>
             <option value="4">4</option>
             <option value="8">8</option>
             <option value="12">12</option>
@@ -210,39 +146,11 @@ const ViewCustomers = () => {
           enableUpdate={false}
           enableDelete={true}
           deleteFunction={handleDeleteCustomer}
-          viewDoc={viewDocumentButton}
+          viewList={viewPoliciesBtn}
         />
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>View Documents</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className='row justify-content-center'>
-          <Button className='my-1' variant="secondary" onClick={() => handleDownload(doc1)}>
-            Download Adhaar Card
-          </Button>
-          <Button className='my-1' variant="secondary" onClick={() => handleDownload(doc2)}>
-              Download Pan Card
-          </Button>
-          <Button className='my-1' variant="secondary" onClick={() => handleDownload(doc3)}>
-              Download Voter Card
-          </Button>
-          {docStatus != "Approved" &&
-          <Button className='btn mt-4' variant="primary" style={{maxWidth: '7rem'}} onClick={() => approve()}>Approve</Button>}
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Done
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };
 
-export default ViewCustomers;
+export default AdminViewCustomer
