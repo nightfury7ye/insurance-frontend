@@ -51,6 +51,7 @@ export const addSchemeApi = async (schemeDto, planid, token) => {
                 max_invest_time: schemeDto.max_invest_time,
                 min_age: schemeDto.min_age,
                 max_age: schemeDto.max_age,
+                profit_ratio: schemeDto.profit_ratio,
                 registrationcommratio: schemeDto.registrationcommratio,
             }
         },
@@ -77,6 +78,7 @@ export const updateSchemeApi = async (schemeid,schemeDto,token) => {
             max_invest_time: schemeDto.max_invest_time,
             min_age: schemeDto.min_age,
             max_age: schemeDto.max_age,
+            profit_ratio: schemeDto.profit_ratio,
             registrationcommratio: schemeDto.registrationcommratio,
         }
     },

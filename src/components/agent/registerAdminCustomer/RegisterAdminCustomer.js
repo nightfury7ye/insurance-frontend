@@ -12,7 +12,7 @@ const IndianStates = [
   
 ];
 
-const RegisterAdminCustomer = ({agentid}) => {
+const RegisterAdminCustomer = () => {
 
     const [aadharCard, setAadharCard] = useState(null);
     const [panCard, setPanCard] = useState(null);
@@ -33,6 +33,8 @@ const RegisterAdminCustomer = ({agentid}) => {
     username: '',
     password: ''
   });
+
+  const agentid = localStorage.getItem("agentid")
 
 
   const handleInputChange = (event) => {
@@ -55,12 +57,6 @@ const RegisterAdminCustomer = ({agentid}) => {
    typeof formData.password == 'undefined' || formData.password == null
   )
   {
-    // Swal.fire({  
-    //   title: "Fields are empty",
-    //   text: "Please fill the fields",
-    //   icon: "error",
-    //   confirmButtonText: "OK", 
-    // });
     alert("Feilds are empty")
     return;  
     }
@@ -118,7 +114,7 @@ const RegisterAdminCustomer = ({agentid}) => {
       return;
     }
    try {
-    let response = await axios.post(`http://localhost:8080/insurance-app/users/customer`,{
+    let response = await axios.post(`http://localhost:8080/insurance-app/users/agent/${agentid}/customer`,{
     firstname: formData.firstname,
     lastname: formData.lastname,
     user:{
@@ -167,13 +163,7 @@ const RegisterAdminCustomer = ({agentid}) => {
   }
 
   const uploadDocuments = async (file, customeridvariable) =>{
-    if(file == null){
-    //   Swal.fire({  
-    //     title: "Document missing",
-    //     text: "Please upload all documents",
-    //     icon: "error",
-    //     confirmButtonText: "OK", 
-    //   });  
+    if(file == null){ 
     alert("Document Missing")
       return;
     }

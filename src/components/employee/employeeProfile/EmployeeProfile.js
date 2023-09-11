@@ -6,8 +6,9 @@ import { getEmployeeAPI } from '../../../service/EmployeeApis';
 
 const EmployeeProfile = () => {
 
-    const employeeId = localStorage.getItem("employeeid")
+    const [employeeId, setEmployeeId] = useState()
     const username = localStorage.getItem("username")
+    const token = localStorage.getItem("auth")
  
   const [formData, setFormData] = useState({
     firstname: '',
@@ -30,8 +31,8 @@ const EmployeeProfile = () => {
         email:response.data.email,
         username: response.data.user.username,
         // password: response.data.user.password
-        
       })
+      setEmployeeId(response.data.employeeid)
       console.log("Employee data", response.data)
     } catch (error) {
       console.log("Error fetching employees:", error);
@@ -88,13 +89,18 @@ const EmployeeProfile = () => {
     let response = await axios.put(`http://localhost:8080/insurance-app/users/employee/${employeeId}`,{
     firstname: formData.firstname,
     lastname: formData.lastname,
-    mobilenumber: formData.mobilenumber,
+    phoneno: formData.mobilenumber,
     email: formData.email,
     user:{
         username: formData.username,
         password: formData.password
     }
-    })
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    )
     alert("Employee Updated Successfully")
    } catch (error) { 
     alert("Error in updating")

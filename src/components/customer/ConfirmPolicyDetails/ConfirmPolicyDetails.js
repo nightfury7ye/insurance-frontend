@@ -26,9 +26,15 @@ const ConfirmPolicyDetails = ({policyDetailsGlobal, schemeDto, moduleNameSetter}
         moduleNameSetter("payment_page")
       };
 
+    const containerStyle = {
+        padding: '2rem',
+        height: '715px',
+        overflow: 'scroll',
+    }
+
 
     return (
-        <div className="form-container">
+        <div className="form-container" style={containerStyle}>
             <div className='policy-details-header'>
                 <h2>Policy Details</h2>
                 <p>Kindly confirm before making payment...</p>

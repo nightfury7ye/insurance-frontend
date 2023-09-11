@@ -170,10 +170,19 @@ const CustomerProfile = () => {
     
   };
 
+  const containerStyle = {
+    padding: '2rem',
+    paddingBottom: '5rem',
+    height: '715px',
+    borderRadius: '10px',
+    overflow: 'scroll',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+}
+
 
   return (
    <>
-    <div className='main-card my-5'>
+    <div className='main-card my-5' style={containerStyle}>
       <h1 className='text-center'>Customer Profile</h1>
       <div className=''>
       <hr></hr>

@@ -5,6 +5,8 @@ import ViewScheme from '../ViewScheme/ViewScheme'
 import Navbar from '../../../shared/Navbar'
 import ViewEmployees from '../ViewEmployees/ViewEmployees'
 import AdminProfile from '../adminProfile/AdminProfile'
+import AdminViewCustomer from '../adminViewCustomer/AdminViewCustomer'
+import ViewCustomersPolicies from '../viewCustomersPolicies/ViewCustomersPolicies'
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -14,6 +16,7 @@ const containerStyle={
 const AdminPanel = () => {
     const [moduleName, setModuleName] = useState("view_plan");
     const [planid, setPlanid] = useState()
+    const [customerid, setCustomerid] = useState()
     useEffect(() => {
       console.log("PLAN IDDDD:",planid);
     }, [planid])
@@ -37,6 +40,16 @@ const AdminPanel = () => {
                     <AdminProfile
                     moduleNameSetter = {setModuleName}/>
                     }
+                    {moduleName === "view_customers" &&
+                    <AdminViewCustomer
+                    moduleNameSetter = {setModuleName}
+                    setCustomerid = {setCustomerid}/>
+                    }
+                    {moduleName === "view_policies" &&
+                    <ViewCustomersPolicies
+                    customerid = {customerid}/>
+                    }
+                    
                 </div>
             </div>
         </div>

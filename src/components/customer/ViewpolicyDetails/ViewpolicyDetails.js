@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Table from '../../../shared/table/Table';
-import { getPaymentsApi, getPolicyApi, installmentPaymentApi } from '../../../service/CustomerApis';
+import { addClaimsApi, getPaymentsApi, getPolicyApi, installmentPaymentApi } from '../../../service/CustomerApis';
 import { Button, Form, Modal } from 'react-bootstrap'
 
 const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) => {
@@ -14,6 +14,8 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
     const [paymentType, setPaymentType] = useState('')
     const [ifscCode, setIfscCode] = useState()
     const [paymentid, setPaymentid] = useState()
+    const [claimSetter, setClaimSetter] = useState(false)
+    const [claimDto, setClaimDto] = useState({})
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     // let paymentButton = true
@@ -46,6 +48,10 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
             max_age: scheme.schemeDetails.max_age,
             profit_ratio: scheme.schemeDetails.profit_ratio,
             });
+            setClaimDto({
+              ...claimDto,
+              amount: policy.sumassured,
+            })
         } catch (error) {
           console.log("Error fetching policies:", error);
         }
@@ -57,6 +63,11 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
           
           console.log("inside getPayments", response.data);
           setPaymentDto(response.data)
+          console.log("Status: ", response.data[(response.data.length) - 1]);
+          console.log("Status: ", response.data.length);
+          if(response.data[(response.data.length) - 1].status.statusname == "paid"){
+            setClaimSetter(true)
+          }
         } catch (error) {
           console.log("Error fetching payments:", error);
         }
@@ -68,6 +79,24 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
           getPayments();
         }
       }, []);
+
+      const applyClaim = async () => {
+        try {
+          const response = await addClaimsApi(token, claimDto, accountNumber, ifscCode)
+          alert("Claim requested successfully")
+          setShow(false)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      const claimBtnHandler = () => {
+        setClaimDto({
+          ...claimDto,
+          policyno: policyData.policyno
+        })
+        setShow(true)
+      }
 
       const payment = (data) => {
         // alert(`You have successfully paid the amount of for Policy No :${policyDetailsGlobal?.policyno}`);
@@ -113,6 +142,10 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
           alert("Incorrect Ifsc code") 
           return
         }
+        if(claimSetter == true){
+          applyClaim();
+          return
+        }
         try {
             await installmentPaymentApi(paymentid, paymentType, token);
             alert("Withdraw request sent successfully")
@@ -126,7 +159,7 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
       let rowDataElements = paymentDto.map((data, index) =>{
         return(
             <tr>
-                <td>{index}</td>
+                <td>{index + 1}</td>
                 <td>{data.paymenttype != null ? data.paymenttype: "-" }</td>
                 <td>{data.amount}</td>
                 <td>{data.date}</td>
@@ -139,6 +172,14 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
         )
     })
 
+    const containerStyle = {
+        padding: '2rem',
+        height: '715px',
+        borderRadius: '10px',
+        overflow: 'scroll',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    }
+
       const tableAccountHeaders = ["ID",
                                     "Payment Type",
                                     "Amount",
@@ -147,7 +188,7 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
                                     "Total Payment",
                                     "Payment status"];
     return (
-        <div className='main-card'>
+        <div className='main-card' style={containerStyle}>
             <h3 style={{marginLeft:'10px', textAlign: 'center'}}>Policy No. - {policyData?.policyno}</h3><br/>
             <div className='table-container'>
             <h6 style={{marginLeft:'10px', textAlign: 'center'}}>Policy Details</h6>
@@ -190,14 +231,6 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
             <div className='col' style={{marginTop: '3rem'}}>
             <h6 style={{marginLeft:'10px', textAlign: 'center'}}>Payment Details</h6>
 
-                {/* <Table
-                headers={tableAccountHeaders}
-                data={paymentDto}
-                enableUpdate={false}
-                enableDelete={false}
-                extraFunction={payButton}
-                /> */}
-
                 <div className='table-container'>
                 <table className="table">
                     <thead>
@@ -216,6 +249,8 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
                   </tbody>
                 </table>
                 </div>
+                {claimSetter &&
+                <Button variant="secondary" onClick={() => claimBtnHandler()}>Claim</Button>}
             </div>
             <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>

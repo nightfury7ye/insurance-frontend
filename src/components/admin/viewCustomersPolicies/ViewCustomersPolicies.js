@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Table from '../../../shared/table/Table';
-import './ViewPolicies.css';
-import Pagination from '../../../shared/table/Pagination';
 import { getPoliciesApi } from '../../../service/CustomerApis';
+import Table from '../../../shared/table/Table';
+import Pagination from '../../../shared/table/Pagination';
+// import './ViewPolicies.css';
 
-const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
+const ViewCustomersPolicies = ({customerid}) => {
   const token = localStorage.getItem("auth");
-  const customerid = localStorage.getItem("customerid");
+//   const customerid = localStorage.getItem("customerid");
   const [policyData, setPolicyData] = useState([]);
   const [curPageNo, setCurPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -64,20 +64,6 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
     setSize(newSize);
   };
 
-  const viewDetails = async (policy) => {
-    console.log("viewDetails: ",policy)
-    setPolicyDetailsGlobal(policy)
-    moduleNameSetter("view_policy_details")
-}
-
-  const viewMore = (objectValue) => {
-    return(
-        <>
-        <button className="btn btn-secondary mb-3" onClick={() => {viewDetails(objectValue)}}>View More</button>
-        </>
-    )
-}
-
   const tablePolicyHeaders = [
     "policyno",
     "issuedate",
@@ -88,16 +74,8 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
     "scheme"
   ];
 
-  const containerStyle = {
-    padding: '2rem',
-    height: '715px',
-    borderRadius: '10px',
-    overflow: 'scroll',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-}
-
   return (
-    <div className='main-card' style={containerStyle}>
+    <div className='main-card'>
       <div className='row'>
         <div className='col-md-4'>
           <label htmlFor="pageSizeDropdown">Items per page:</label>
@@ -128,13 +106,10 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
           data={policyData}
           enableUpdate={false}
           enableDelete={false}
-          extraFunction={viewMore}
         />
       </div>
     </div>
   );
 };
 
-
-
-export default ViewPolicies
+export default ViewCustomersPolicies
