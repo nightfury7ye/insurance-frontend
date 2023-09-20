@@ -21,8 +21,9 @@ const CustomerViewSchemes = ({planid, setSchemeDto, moduleNameSetter}) => {
   useEffect(() => {
     console.log("UseEffect");
     if (localStorage.getItem('auth')) {
-      getCustomerSchemes();
+      // getCustomerSchemes();
     }
+    getCustomerSchemes();
   }, []);
 
   const handlePlanClick = (scheme) => {

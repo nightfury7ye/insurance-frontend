@@ -42,7 +42,7 @@ const ConfirmPolicyDetails = ({policyDetailsGlobal, schemeDto, moduleNameSetter}
             <form>
                 <div className="form-box">
                     <label>Scheme Name:</label>
-                    <input type="text" value={schemeDto.scheme_name} disabled />
+                    <input type="text" value={schemeDto.schemename} disabled />
                 </div>
                 <div className="form-box">
                     <label>No. of Years:</label>

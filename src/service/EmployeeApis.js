@@ -9,6 +9,19 @@ export const getCustomersApi = async (curPageNo, size) => {
       });
       return response
 };
+
+export const getPendingCustomersApi = async (curPageNo, size, token) => {
+      const response = await axios.get(`http://localhost:8080/insurance-app/pending-customers`, {
+        params: {
+          page: curPageNo >= 1 ? (curPageNo - 1) : curPageNo,
+          size: size,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response
+};
 export const customerApproveApi = async (customerid, token) => {
   console.log("inside customerApproveApi: ", customerid, token);
       await axios.put(`http://localhost:8080/insurance-app/customer/${customerid}/document-status`, {

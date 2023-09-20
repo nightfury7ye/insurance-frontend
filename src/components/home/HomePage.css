@@ -1,0 +1,120 @@
+.home-page {
+    font-family: Arial, sans-serif;
+  }
+  
+  .header {
+    background-color: #4287c3;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header h1 {
+    font-size: 38px;
+    margin: 0;
+  }
+  
+  /* nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+  } */
+  
+  nav ul li {
+    margin-right: 20px;
+    font-size: 18px;
+  }
+  
+  .hero {
+    background-image: url('../../assets/images/insurance_hero_section.jpg');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: #fff;
+    padding: 200px 0;
+    height: 28rem;
+  }
+  
+  .hero-content {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+  
+  .hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #0058a3;
+  }
+
+  .services {
+    margin-top: 3.5rem;
+  }
+  
+  .service {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 2rem;
+  }
+
+  .service div {
+    flex: 1;
+    margin: 1rem 2rem;
+}
+  
+  .service img {
+    background-color: #a35700;
+    border-radius: 2%;
+    width: 80%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center; 
+    margin-bottom: 1rem;
+  }
+  
+  .service h3 {
+    font-size: 24px;
+    margin: 20px 0;
+  }
+
+  .service p {
+    font-size: 14px;
+  }
+  
+  .testimonials {
+    background-color: #f0f0f0;
+    padding: 40px 0;
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+    text-align: center;
+  }
+  
+  .testimonial {
+    max-width: 400px;
+    height: 250px;
+    border-radius: 2%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .testimonial img {
+    max-width: 110px;
+    height: 90px;
+    border-radius: 50%;
+    margin: 15px auto;
+    margin-bottom: 25px;
+  }
+
+
+
+  .testimonial-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2.6rem;
+  }
+  

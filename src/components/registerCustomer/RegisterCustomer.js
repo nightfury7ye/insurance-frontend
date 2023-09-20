@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { Form } from 'react-bootstrap';
 import './RegisterCustomer.css'
 
@@ -35,6 +37,7 @@ const RegisterCustomer = () => {
     password: ''
   });
 
+  const [selectedDate, setSelectedDate] = useState(null); 
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -57,12 +60,6 @@ const RegisterCustomer = () => {
    typeof formData.password == 'undefined' || formData.password == null
   )
   {
-    // Swal.fire({  
-    //   title: "Fields are empty",
-    //   text: "Please fill the fields",
-    //   icon: "error",
-    //   confirmButtonText: "OK", 
-    // });
     alert("Feilds are empty")
     return;  
     }
@@ -178,12 +175,6 @@ const RegisterCustomer = () => {
 
   const uploadDocuments = async (file, customeridvariable) =>{
     if(file == null){
-    //   Swal.fire({  
-    //     title: "Document missing",
-    //     text: "Please upload all documents",
-    //     icon: "error",
-    //     confirmButtonText: "OK", 
-    //   });  
     alert("Document Missing")
       return;
     }
@@ -197,7 +188,6 @@ const RegisterCustomer = () => {
         body: form,
       });
 
-      // Handle the response from the server as needed
       console.log('Upload successful:', response);
      
     } catch (error) {
@@ -205,6 +195,11 @@ const RegisterCustomer = () => {
     }
     
   }
+    const handleDateChange = (date) => {
+        const formattedDate = date ? date.toISOString().split('T')[0] : '';
+        setSelectedDate(date);
+        setFormData((prevData) => ({ ...prevData, dob: formattedDate }));
+    };
 
   return (
    <>
@@ -233,11 +228,10 @@ const RegisterCustomer = () => {
           ))}
         </select><br />
         
-        <input type="text" name="dob" value={formData.dob}   placeholder="DOB" onChange={handleInputChange} /><br />
         </div>
 
         <div  className="name-inputs"> 
-        <input type="text" name="city" value={formData.city}   placeholder="City" onChange={handleInputChange} /><br />
+        <input type="text" name="city" value={formData.city} placeholder="City" onChange={handleInputChange} /><br />
 
         {/* <label>Pincode:</label> */}
         <input type="number" name="pincode" value={formData.pincode}   placeholder="Pincode" onChange={handleInputChange}/><br />
@@ -257,6 +251,16 @@ const RegisterCustomer = () => {
         <input type="text" name="username" value={formData.username}   placeholder="Username" onChange={handleInputChange}  /><br />
 
         <input name="password" value={formData.password}   placeholder="Password" onChange={handleInputChange}  /><br />
+        </div>
+        <div className="name-inputs"> 
+          <label>Date of Birth:</label>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            maxDate={new Date()} 
+            showYearDropdown
+            dateFormat="dd/MM/yyyy"
+          />
         </div>
         <div  className="name-inputs"> 
 

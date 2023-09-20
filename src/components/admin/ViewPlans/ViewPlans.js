@@ -28,7 +28,6 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
 
     const getSchemes = async (plan) => {
         console.log("Hiee ",plan)
-        // navigate("/viewscheme", { state: plan.planid })
         setSchemePlanid(plan.planid)
         moduleNameSetter("view_scheme")
     }
@@ -43,11 +42,13 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
     const deletePlan = async (plan) => {
         console.log("plan: ", plan);
         const planid = plan.planid;
-        const statusid = 2;
+        if(plan.status.statusname !== 'active'){
+            alert("This Plan is already deleted");
+            return;
+        }
         try {
-            let response = await deletePlanApi(token, planid, statusid)
+            let response = await deletePlanApi(planid)
             getplansData()
-            setStatusname('')
             alert(`plan deleted successfully`)
         } catch (error) {
             console.log(error);
@@ -59,10 +60,17 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
             alert("Plan name is required field.");
             return;
         }
-        const response = await addPlanApi(token, planname)
+        try {
+            const response = await addPlanApi(token, planname)
             getplansData()
             setPlanname("")
-        alert(`Plan added successfully`)
+            alert(`Plan added successfully`)
+        } catch (error) {
+            console.log(error.response.data);
+            if(error.response.data){
+                alert(error.response.data)
+            }
+        }
     }
 
     const updatePlan = async () => {
@@ -86,9 +94,19 @@ const ViewPlans = ({moduleNameSetter, setSchemePlanid}) => {
         setPlanid(planObject.planid)
         setPlanname(planObject.plan_name)
     }
+
+    const containerStyle = {
+        maxHeight: '715px',
+        borderRadius: '10px',
+        margin: '25px',
+        paddingBottom: '25px',
+        maxWidth:"90%",
+        overflow: 'scroll',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    }
     const tableHeaders = ["ID", "Plan Name","No. of Schemes","Status","View Schemes"]
   return (
-      <div className='row align-items-center justify-content-center'>
+      <div className='row align-items-center justify-content-center' style={containerStyle}>
             <div className="modal" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">

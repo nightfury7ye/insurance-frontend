@@ -30,6 +30,7 @@ const ViewEmployees = () => {
         lastname: employee.lastname,
         salary: employee.salary,
         username: employee.user.username,
+        status: employee.userStatus.statusname
       }));
 
       setEmployeeData(employeeDtoArray);
@@ -66,10 +67,13 @@ const ViewEmployees = () => {
   const handleDeleteEmployee = async (employee) => {
     const employeeid = employee.employeeid;
     console.log("handleDeleteEmployee: ", employeeid, employee);
+    if(employee.status !== 'active'){
+      alert("This Employee is already deleted");
+      return;
+  }
     try {
       await deleteEmployeeApi(token, employeeid)
       getEmployees();
-
       alert(`Employee with ID ${employeeid} deleted successfully`);
     } catch (error) {
       console.log(`Error deleting employee with ID ${employeeid}:`, error);
@@ -92,10 +96,12 @@ const ViewEmployees = () => {
       alert("Salary should be a positive number.");
       return;
     }
-
+    console.log(employeeDto.firstname);
     if (
-      !/[a-zA-Z]/.test(employeeDto.firstname ) ||
-      !/[a-zA-Z]/.test(employeeDto.lastname) ){
+      /[0-9]/.test(employeeDto.firstname) ||
+      /[0-9]/.test(employeeDto.lastname) ||
+      !/^[a-zA-Z]+$/.test(employeeDto.firstname) ||
+      !/^[a-zA-Z]+$/.test(employeeDto.lastname)){
       alert("Scheme name should contain mixed case letters.");
       return;
     }
@@ -106,6 +112,10 @@ const ViewEmployees = () => {
       alert(`Employee added successfully with ID: ${response.data.employeeid}`);
     } catch (error) {
       console.log("Error adding employee:", error);
+      alert("Error: Username already exists");
+      // if(error.response.data){
+      //   alert(error.response.data)
+      // }
     }
   };
 
@@ -115,6 +125,7 @@ const ViewEmployees = () => {
     "Last Name",
     "Salary",
     "Username",
+    "status"
   ];
 
    const handleAddEmployeeButton = () => {

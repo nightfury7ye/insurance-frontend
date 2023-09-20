@@ -12,7 +12,7 @@ const SchemeDetails = ({schemeDto, setPolicyDetailsGlobal, moduleNameSetter}) =>
           <div className='scheme-content'>
             <div className='scheme-field'>
               <label>Scheme Name:</label>
-              <p>{schemeDto.scheme_name}</p>
+              <p>{schemeDto.schemename}</p>
             </div>
             <div className='scheme-field'>
               <label>Description:</label>

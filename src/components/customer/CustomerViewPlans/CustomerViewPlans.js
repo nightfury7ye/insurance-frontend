@@ -23,8 +23,9 @@ const handlePlanClick = (planId) => {
 
 useEffect(() => {
     if(localStorage.getItem('auth')){
-      getCustomerPlans();
+      // getCustomerPlans();
     }
+    getCustomerPlans();
 },[])
   return (
     <div className='main-container'>

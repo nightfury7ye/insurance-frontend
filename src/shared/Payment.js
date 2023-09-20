@@ -60,13 +60,25 @@ const Payment = ({policyDetailsGlobal, schemeDto, moduleNameSetter}) => {
       }
 
     const handlePayButtonClick = () => {
-        if (paymentData.paymentType == '' || paymentData.cardNumber == '' || paymentData.cvv == '') {
+        if (paymentData.paymentType == '' || typeof paymentData.paymentType == 'undefined' || paymentData.cardNumber == '' || paymentData.cvv == '') {
             alert('Please fill all the fields.');
             return
         }
-        purchasePolicy()
-        console.log(paymentData);
-    };
+        const cardNumber = paymentData.cardNumber;
+        const cvv = paymentData.cvv;
+
+        if (
+            !/^\d+$/.test(cardNumber) || 
+            cardNumber.length < 13 || cardNumber.length > 19 || 
+            !/^\d+$/.test(cvv) || 
+            (cvv.length !== 3 && cvv.length !== 4)
+        ) {
+            alert('Please fill all the fields correctly.');
+            return;
+        }
+            purchasePolicy()
+            console.log(paymentData);
+        };
 
     const containerStyle = {
         height: '715px',
@@ -103,7 +115,6 @@ const Payment = ({policyDetailsGlobal, schemeDto, moduleNameSetter}) => {
                         <option value="">Select Payment Type</option>
                         <option value="Credit Card">Credit Card</option>
                         <option value="Debit Card">Debit Card</option>
-                        <option value="UPI">UPI</option>
                     </select>
                 </div>
                 <div className="payment-box">

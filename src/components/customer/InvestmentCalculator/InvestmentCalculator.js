@@ -1,7 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './InvestmentCalculator.css';
+import { getCustomerAPI, getCustomerByIdAPI } from '../../../service/CustomerApis';
 
 const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSetter }) => {
+    const username = localStorage.getItem('username')
+    const customerid = localStorage.getItem('customerid')
+    const [customer, setCustomer] = useState({})
+    const [approvedCustomer, setApprovedCustomer] = useState(true)
+    const [ageRangeCustomer, setageRangeCustomer] = useState(true)
+    const [login, setLogin] = useState(true)
     const [policyDetails, setPolicyDetails] = useState({
         years: '',
         investmentAmount: '',
@@ -11,6 +18,55 @@ const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSet
         totalInvestment: '',
         totalAmount: '',
       });
+
+      function calculateAge(dateOfBirth) {
+        const dobParts = dateOfBirth.split('-');
+        const dobYear = parseInt(dobParts[0], 10);
+        const dobMonth = parseInt(dobParts[1], 10);
+        const dobDay = parseInt(dobParts[2], 10);
+        const currentDate = new Date();
+      
+        let age = currentDate.getFullYear() - dobYear;
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentDay = currentDate.getDate();
+
+        if (currentMonth < dobMonth || (currentMonth === dobMonth && currentDay < dobDay)) {
+          age--;
+        }
+        return age;
+      }
+
+      const getcustomer = async () => {
+        try {
+          console.log("here custid: ", customerid);
+          const response = await getCustomerByIdAPI(customerid);
+          setCustomer(response.data);
+          console.log("customer data in calculator", response.data)
+          if(response.data.documentStatus != "Approved"){
+            setApprovedCustomer(false)
+          }
+          let min_age = schemeDto.schemeDetails.min_age;
+          let max_age = schemeDto.schemeDetails.max_age
+          let dob = response.data.dob;
+          const age = calculateAge(dob);
+          console.log('Age:', age);
+          if (age < min_age || age > max_age) {
+            console.log("age not valid ", min_age, max_age);
+            setageRangeCustomer(false)
+          }
+
+        } catch (error) {
+          console.log("Error fetching schemes:", error);
+        }
+      }
+      useEffect(() => {
+        if(localStorage.getItem('auth')){
+          getcustomer()
+        }else{
+          setLogin(false)
+        }
+      }, [])
+      
     
       const handleCalculate = () => {
         const { years, investmentAmount, months } = policyDetails;
@@ -47,15 +103,10 @@ const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSet
         });
         return "valid";
       };
-
-        function timeout(delay) {
-            return new Promise( res => setTimeout(res, delay) );
-        }
     
       const handleBuyPlan = async () => {
         let msg = handleCalculate()
         console.log("msg",msg)
-        // await timeout(5000);
         if(msg === "valid"){
             console.log('schemeDto:', schemeDto);
             console.log('policyDetails:', policyDetails);
@@ -63,7 +114,6 @@ const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSet
             moduleNameSetter("confirm_policy_details")
         }
       };
-      
     
       return (
         <div className='investment-calculator'>
@@ -125,7 +175,12 @@ const InvestmentCalculator = ({ schemeDto, setPolicyDetailsGlobal, moduleNameSet
             </div>
           </div>
           <div className='buy-plan-button'>
-            <button onClick={handleBuyPlan}>Buy Plan</button>
+            {login ?
+            approvedCustomer?
+            ageRangeCustomer? <button onClick={handleBuyPlan}>Buy Plan</button>:
+            <h4 style={{color:'red'}}><b>*Age Range is not valid for this plan*</b></h4>
+            :<h5 style={{color:"#0987f5" }}>*Sorry Your documents arent verified till now! come again later after approval*</h5>
+            :<h5 style={{color:"#0987f5" }}>*Login to Buy policy*</h5>}
           </div>
         </div>
       );

@@ -4,7 +4,7 @@ import Table from '../../../shared/table/Table';
 import Pagination from '../../../shared/table/Pagination';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { DeleteAgentApi, addAgentApi, getAgentsApi } from '../../../service/AgentApis';
+import { DeleteAgentApi, addAgentApi, getAgentsApi, softDeleteAgentApi } from '../../../service/AgentApis';
 
 const ViewAgents = () => {
   const token = localStorage.getItem("auth");
@@ -16,7 +16,6 @@ const ViewAgents = () => {
     firstname: "",
     lastname: "",
     qualification: "",
-    // commision: 0.0,
     username: "",
     password: "",
   });
@@ -37,6 +36,7 @@ const ViewAgents = () => {
         qualification: agent.qualification,
         commision: agent.totalcommision,
         username: agent.user.username,
+        status: agent.userStatus.statusname
       }));
 
       setAgentData(agentDtoArray);
@@ -77,10 +77,15 @@ const ViewAgents = () => {
 
   const confirmDeleteAgent = async () => {
     if (agentToDelete) {
+      console.log(agentToDelete.status)
+      if(agentToDelete.status !== "active"){
+        alert("Already deleted")
+        return
+      }
       const agentid = agentToDelete.agentid;
       console.log("handleDeleteAgent: ", agentid, agentToDelete);
       try {
-        await DeleteAgentApi(agentid, token)
+        await softDeleteAgentApi(agentid, token)
         getAgents();
 
         alert(`Agent with ID ${agentid} deleted successfully`);
@@ -96,23 +101,19 @@ const ViewAgents = () => {
       !agentDto.firstname ||
       !agentDto.lastname ||
       !agentDto.qualification ||
-      // isNaN(agentDto.commision) ||
       !agentDto.username ||
       !agentDto.password
     ) {
       alert("All fields are required.");
       return;
     }
-  
-    // if (agentDto.commision <= 0) {
-    //   alert("Salary should be a positive number.");
-    //   return;
-    // }
 
     if (
-      !/[a-zA-Z]/.test(agentDto.firstname ) ||
-      !/[a-zA-Z]/.test(agentDto.lastname) ){
-      alert("Scheme firstname and lastname contains only letters.");
+      /[0-9]/.test(agentDto.firstname) ||
+      /[0-9]/.test(agentDto.lastname) ||
+      !/^[a-zA-Z]+$/.test(agentDto.firstname) ||
+      !/^[a-zA-Z]+$/.test(agentDto.lastname)){
+      alert("Scheme firstname and lastname Should contains only letters.");
       return;
     }
 
@@ -123,7 +124,11 @@ const ViewAgents = () => {
 
       alert(`Agent added successfully with ID: ${response.data.agentid}`);
     } catch (error) {
-      console.log("Error adding agent:", error);
+      console.log("Error: Username already exists", error);
+      alert("Error: Username already exists");
+      // if(error.response.data){
+      //   alert(error.response.data)
+      // }
     }
   };
 
@@ -134,6 +139,7 @@ const ViewAgents = () => {
     "Qualification",
     "Commission(Rs)",
     "Username",
+    "Status"
   ];
 
   const handleAddAgentButton = () => {
@@ -141,7 +147,6 @@ const ViewAgents = () => {
       firstname: "",
       lastname: "",
       qualification: "",
-      // commision: 0.0,
       username: "",
       password: "",
     });

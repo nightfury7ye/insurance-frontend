@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { Form } from 'react-bootstrap';
 import './RegisterCustomer.css'
 
@@ -34,6 +36,8 @@ const RegisterAdminCustomer = () => {
     username: '',
     password: ''
   });
+  const [selectedDate, setSelectedDate] = useState(null); 
+
 
   const agentid = localStorage.getItem("agentid")
 
@@ -196,6 +200,12 @@ const RegisterAdminCustomer = () => {
     
   }
 
+  const handleDateChange = (date) => {
+    const formattedDate = date ? date.toISOString().split('T')[0] : '';
+    setSelectedDate(date);
+    setFormData((prevData) => ({ ...prevData, dob: formattedDate }));
+};
+
   return (
    <>
     <div className='main-card my-5'>
@@ -222,10 +232,6 @@ const RegisterAdminCustomer = () => {
             <option key={state} value={state}>{state}</option>
           ))}
         </select><br />
-        
-         
-        <input type="text" name="city" value={formData.dob}   placeholder="DOB" onChange={handleInputChange} /><br />
-
         </div>
 
         <div  className="name-inputs"> 
@@ -249,6 +255,16 @@ const RegisterAdminCustomer = () => {
         <input type="text" name="username" value={formData.username}   placeholder="Username" onChange={handleInputChange}  /><br />
 
         <input name="password" value={formData.password}   placeholder="Password" onChange={handleInputChange}  /><br />
+        </div>
+        <div className="name-inputs"> 
+          <label>Date of Birth:</label>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            maxDate={new Date()} 
+            showYearDropdown
+            dateFormat="dd/MM/yyyy"
+          />
         </div>
         <div  className="name-inputs"> 
 

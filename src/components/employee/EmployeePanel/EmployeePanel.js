@@ -7,6 +7,7 @@ import ViewNonApprovedCustomers from '../ViewNonApprovedCustomers/ViewNonApprove
 import CommissionWithdrawals from '../commissionWithdrawals/CommissionWithdrawals';
 import EmployeeProfile from '../employeeProfile/EmployeeProfile';
 import ViewClaims from '../viewClaims/ViewClaims';
+import { useNavigate } from 'react-router-dom';
 
 const containerStyle={
     minHeight:'91.3vh',
@@ -14,8 +15,16 @@ const containerStyle={
     flexDirection: 'row'
 }
 const EmployeePanel = () => {
+    let navigation = useNavigate()
     const [moduleName, setModuleName] = useState("view_agents");
     const [id, setId] = useState()
+    useEffect(() => {
+        let role = localStorage.getItem("role")
+        if(role != "ROLE_EMPLOYEE"){
+            localStorage.clear()
+            navigation(`/`)
+        }
+      }, [])
     useEffect(() => {
       console.log("PLAN IDDDD:",id);
     }, [id])
