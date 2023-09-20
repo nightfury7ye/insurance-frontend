@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from '../table/Pagination';
 import Table from '../table/Table';
-import { customerApproveApi, getCustomersApi } from '../../service/EmployeeApis';
+import { customerApproveApi, getCustomersApi, getPendingCustomersApi } from '../../service/EmployeeApis';
 import { Button, Modal } from 'react-bootstrap';
 
 const ViewCustomers = () => {
@@ -19,11 +19,12 @@ const ViewCustomers = () => {
   const handleClose = () => setShow(false);
   const [docStatus, setDocStatus] = useState()
   const [customerid, setCustomerid] = useState()
-
+  const [inactiveFilter, setInactiveFilter] = useState(false)
+  const [inactiveButtonActive, setInactiveButtonActive] = useState(false);
 
   const getCustomers = async () => {
     try {
-      const response = await getCustomersApi(curPageNo, size)
+      const response = inactiveFilter ? await getPendingCustomersApi(curPageNo, size, token): await getCustomersApi(curPageNo, size);
 
       console.log("inside getCustomers", response.data);
 
@@ -56,7 +57,7 @@ const ViewCustomers = () => {
 
   useEffect(() => {
     getCustomers();
-  }, [curPageNo, size]);
+  }, [curPageNo, size, inactiveFilter]);
 
   const handlePageChange = async (clickValue) => {
     if (clickValue === "prev" && curPageNo > 1)
@@ -114,6 +115,12 @@ const ViewCustomers = () => {
       console.log('Error downloading file:', error);
     }
 }
+
+const toggleInactiveFilter = () => {
+  setInactiveFilter(!inactiveFilter);
+  setInactiveButtonActive(!inactiveButtonActive);
+  console.log(!inactiveFilter);
+};
 
   const approve = async () => {
     console.log(customerid);
@@ -193,7 +200,7 @@ const ViewCustomers = () => {
             <option value="12">12</option>
           </select>
         </div>
-        <div className='col-md-4'>
+        <div className='col-md-3'>
           <Pagination
             curPageNo={curPageNo}
             totalPages={totalPages}
@@ -202,13 +209,21 @@ const ViewCustomers = () => {
             onPageChange={handlePageChange}
           />
         </div>
+        <div className='col-md-4'>
+          <button
+            className={`btn ${inactiveButtonActive ? 'btn-success' : 'btn-light'}`}
+            onClick={toggleInactiveFilter}
+          >
+            {inactiveButtonActive ? 'Selected Inactive' : 'Select Inactive'}
+          </button>
+        </div>
       </div>
       <div className='table-container'>
         <Table
           headers={tableCustomerHeaders}
           data={customerData}
           enableUpdate={false}
-          enableDelete={true}
+          enableDelete={false}
           deleteFunction={handleDeleteCustomer}
           viewDoc={viewDocumentButton}
         />

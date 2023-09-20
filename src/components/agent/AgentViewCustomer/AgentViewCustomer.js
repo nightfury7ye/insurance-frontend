@@ -69,11 +69,11 @@ const AgentViewCustomer = ({moduleNameSetter}) => {
       }
     };
 
-    const getSchemes = async (customer) => {
+    const buyPlan = async (customer) => {
         console.log("Hiee ",customer)
         if(customer.documentStatus === "Approved"){
             localStorage.setItem("customerid", customer.customerid)
-            // navigate("/viewscheme", { state: plan.planid })
+            // localStorage.setItem("custUsername", customer.username)
             moduleNameSetter("view_plan")
         }else{
             alert("Document Status Pending: Please wait till the documents gets approved.")
@@ -83,7 +83,7 @@ const AgentViewCustomer = ({moduleNameSetter}) => {
     const buyPolicy = (objectValue) => {
         return(
             <>
-            <button className="btn btn-secondary mb-3" onClick={() => {getSchemes(objectValue)}}>Buy Policy</button>
+            <button className="btn btn-secondary mb-3" onClick={() => {buyPlan(objectValue)}}>Buy Policy</button>
             </>
         )
     }

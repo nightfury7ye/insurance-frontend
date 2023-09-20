@@ -30,11 +30,12 @@ export const updatePlanApi = async (token, planid, planname) => {
     return response
 }
 
-export const deletePlanApi = async (token, planid) => {
-    let response = await axios.delete(`http://localhost:8080/insurance-app/insurance-plan/${planid}`,{
-        headers:{
-            Authorization:`Bearer ${token}`
-        }
+export const deletePlanApi = async (planid) => {
+    let response = await axios.post(`http://localhost:8080/insurance-app/insurance-plan/togglestatus`,{},{
+        params: {
+            planid: planid,
+            statusid: 2
+        },
     })
     return response
 }
@@ -79,7 +80,7 @@ export const updateSchemeApi = async (schemeid,schemeDto,token) => {
             min_age: schemeDto.min_age,
             max_age: schemeDto.max_age,
             profit_ratio: schemeDto.profit_ratio,
-            registrationcommratio: schemeDto.registrationcommratio,
+            registrationcommratio: schemeDto.registration_commission_ratio,
         }
     },
     {   

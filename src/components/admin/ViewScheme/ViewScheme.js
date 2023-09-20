@@ -22,9 +22,9 @@ const ViewScheme = ({planid, setPlanid}) => {
         min_age: 0,
         max_age: 0,
         profit_ratio: 0,
-        registrationcommratio: 0,
+        registration_commission_ratio: 0,
         installmentcommratio: 0,
-        status: 1
+        // status: 1
     })
 
     const getschemesData = async () => {
@@ -47,7 +47,11 @@ const ViewScheme = ({planid, setPlanid}) => {
     const deleteScheme = async (scheme) => {
         console.log("scheme: ", scheme);
         const schemeid = scheme.schemeid;
-        let response = await axios.delete(`http://localhost:8080/adminapp/delete_insurance_scheme/${schemeid}`,{
+        if(scheme.status.statusname !== 'active'){
+            alert("This Scheme is already deleted");
+            return;
+        }
+        let response = await axios.post(`http://localhost:8080/insurance-app/insurance-scheme/${schemeid}/${2}`,{
             headers:{
                 Authorization:`Bearer ${token}`
             }
@@ -77,12 +81,12 @@ const ViewScheme = ({planid, setPlanid}) => {
             return;
         }
 
-        if (schemeDto.registrationcommratio < 2 || schemeDto.registrationcommratio > 15) {
+        if (schemeDto.registration_commission_ratio < 2 || schemeDto.registration_commission_ratio > 15) {
             alert("Registration Commission Ratio should be between 2 and 15.");
             return;
         }
-        if (schemeDto.profit_ratio < 0) {
-            alert("Profit Ratio should be a positive number.");
+        if (schemeDto.profit_ratio < 0 && schemeDto.profit_ratio > 20) {
+            alert("Profit Ratio should be in 0 to 20 range number.");
             return;
           }
         
@@ -133,6 +137,11 @@ const ViewScheme = ({planid, setPlanid}) => {
             return;
         }
 
+        if (schemeDto.min_age < 0) {
+            alert("Minimum age should be Greater than Zero.");
+            return;
+        }
+
         if (schemeDto.min_amount >= schemeDto.max_amount) {
             alert("Minimum amount should be less than Maximum amount.");
             return;
@@ -143,12 +152,13 @@ const ViewScheme = ({planid, setPlanid}) => {
             return;
         }
 
-        if (schemeDto.registrationcommratio < 2 || schemeDto.registrationcommratio > 15) {
+        if (schemeDto.registration_commission_ratio < 2 || schemeDto.registration_commission_ratio > 15) {
             alert("Registration Commission Ratio should be between 2 and 15.");
             return;
         }
-        if (schemeDto.profit_ratio < 0) {
-            alert("Profit Ratio should be a positive number.");
+        console.log("profit: ", schemeDto.profit_ratio);
+        if (schemeDto.profit_ratio < 0 || schemeDto.profit_ratio > 20) {
+            alert("Profit Ratio should be in 0 to 20 range number.");
             return;
           }
         
@@ -210,8 +220,8 @@ const ViewScheme = ({planid, setPlanid}) => {
             min_age: schemeObject.schemeDetails.min_age,
             max_age: schemeObject.schemeDetails.max_age,
             profit_ratio: schemeObject.schemeDetails.profit_ratio,
-            registrationcommratio: schemeObject.schemeDetails.registrationcommratio,
-            status: schemeObject.status.statusid
+            registration_commission_ratio: schemeObject.schemeDetails.registrationcommratio,
+            // status: schemeObject.status.statusid
         });
     }
     const refreshScheme = () => {
@@ -225,8 +235,8 @@ const ViewScheme = ({planid, setPlanid}) => {
             min_age: 0,
             max_age: 0,
             profit_ratio: 0,
-            registrationcommratio: 0,
-            status: 1
+            registration_commission_ratio: 0,
+            // status: 1
         })
     }
     const tableAccountHeaders = ["ID", 
@@ -243,8 +253,16 @@ const ViewScheme = ({planid, setPlanid}) => {
                                 // "installment comm ratio",
                                 "status"]
     console.log(planid);
+    const containerStyle = {
+        maxHeight: '715px',
+        borderRadius: '10px',
+        margin: '25px',
+        overflow: 'scroll',
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    }
+
   return (
-    <div className='row align-items-center justify-content-center' >
+    <div className='row align-items-center justify-content-center' style={containerStyle}>
         <div className="modal" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
@@ -314,7 +332,7 @@ const ViewScheme = ({planid, setPlanid}) => {
                     </div>
                 </div>
             </div>
-        <div className='col' style={{marginTop: '3rem'}}>
+        <div className='col mx-3' style={{marginTop: '3rem'}}>
             <div className='float-end mx-5'><button className="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal" onClick={refreshScheme}>Add Scheme</button></div>
             <Table
             headers={tableAccountHeaders}

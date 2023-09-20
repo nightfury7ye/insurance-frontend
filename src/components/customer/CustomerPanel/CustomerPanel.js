@@ -41,8 +41,13 @@ const CustomerPanel = () => {
     try {
       const response = await getCustomerAPI(username);
       setCustomer(response.data);
-      console.log("customer data", customer)
+      console.log("customer data", response.data)
       localStorage.setItem("customerid", response.data.customerid)
+      if (response.data.userStatus.statusname !== "active") {
+        alert("Your account Has been deleted")
+        localStorage.clear()
+        navigation(`/`)
+      }
     } catch (error) {
       console.error("Error fetching schemes:", error);
     }

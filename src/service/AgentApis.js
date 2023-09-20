@@ -42,6 +42,13 @@ export const DeleteAgentApi = async (agentid,token) => {
     },
   });
 }
+export const softDeleteAgentApi = async (agentid,token) => {
+  await axios.put(`http://localhost:8080/insurance-app/users/agent/${agentid}/status/${2}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
 
 export const addAgentApi = async (agentDto) => {
     const response = await axios.post(`http://localhost:8080/insurance-app/users/agent`, {

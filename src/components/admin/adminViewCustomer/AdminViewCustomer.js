@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Modal } from 'react-bootstrap';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import { getCustomersApi } from '../../../service/EmployeeApis';
 import Pagination from '../../../shared/table/Pagination';
 import Table from '../../../shared/table/Table';
@@ -63,10 +63,11 @@ const AdminViewCustomer = ({moduleNameSetter, setCustomerid}) => {
   };
 
   const handleDeleteCustomer = async (customer) => {
-    if (customer.userstatus.statusid === 1) {
+    console.log("handleDeleteCustomer clicked");
+    if (customer.userstatus == 'active') {
       updateCustomerStatus(customer.customerid, 2);
-    } else if (customer.userstatus.statusid === 2) {
-      updateCustomerStatus(customer.customerid, 1);
+    } else {
+      alert("Customer is already deleted")
     }
   };
 
@@ -74,7 +75,6 @@ const AdminViewCustomer = ({moduleNameSetter, setCustomerid}) => {
     console.log("index from viewDocuments: ", objectValue);
     setCustomerid(objectValue.customerid)
     moduleNameSetter("view_policies")
-    // let customer = customerFullData.content[index]
     }
 
   const viewPoliciesBtn = (objectValue) => {
@@ -88,12 +88,7 @@ const AdminViewCustomer = ({moduleNameSetter, setCustomerid}) => {
 
   const updateCustomerStatus = async (customerId, statusId) => {
     try {
-      await axios.put(`http://localhost:8080/employeeapp/update_customer_status/${customerId}/${statusId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      await axios.put(`http://localhost:8080/insurance-app/users/customer/${customerId}/status/${statusId}`);
       getCustomers();
 
       alert(`Customer status updated successfully`);

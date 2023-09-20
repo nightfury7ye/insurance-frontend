@@ -26,7 +26,7 @@ const ViewCustomersPolicies = ({customerid}) => {
         maturitydate: policy.maturitydate,
         premiumamount: policy.premiumamount,
         sumassured: policy.sumassured,
-        installmentType: policy.installmentType.typeid,
+        // installmentType: policy.installmentType.typeid,
         scheme_name: policy.insuranceScheme.scheme_name,
       }));
 
@@ -70,7 +70,7 @@ const ViewCustomersPolicies = ({customerid}) => {
     "maturitydate",
     "premium amount",
     "sum assured",
-    "installment Type",
+    // "installment Type",
     "scheme"
   ];
 

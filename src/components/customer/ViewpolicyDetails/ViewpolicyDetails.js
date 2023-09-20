@@ -136,6 +136,10 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
           alert("Incorrect Account Number")
           return
         }
+        if(accountNumber.length < 11 || accountNumber.length > 16 ){
+          alert("Incorrect Account Number Account no. length can only be 11 to 16 digits")
+          return
+        }
     
         const isValidIFSCCode = /^[a-zA-Z0-9]+$/.test(ifscCode);
         if(!isValidIFSCCode){
@@ -196,7 +200,7 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
                 <thead>
                     <tr>
                     {Object.keys(policyData).map((key, index) => (
-                        <th scope="col" className='text-center col align-items-center justify-content-center'>{key.replace(/_/g, ' ').toUpperCase()}</th>
+                        <th scope="col" className='text-center col align-items-center justify-content-center'>{key === "installment_Type"? key.replace(/_/g, ' ').toUpperCase()+ " (in months)" : key.replace(/_/g, ' ').toUpperCase()}</th>
                     ))}
                     </tr>
                 </thead>

@@ -69,6 +69,7 @@ export const installmentPaymentApi = async (paymentid, paymentType, token) => {
 }
 
 export const getCustomerAPI = async (username) => {
+  console.log("getCustomerAPI");
       const response = await axios.get(`http://localhost:8080/insurance-app/users/customer`,{
         params: {
             username: username,
@@ -77,7 +78,14 @@ export const getCustomerAPI = async (username) => {
       return response
   }
 
+  export const getCustomerByIdAPI = async (customerid) => {
+    console.log("getCustomerAPI");
+        const response = await axios.get(`http://localhost:8080/insurance-app/users/customer/${customerid}`);
+        return response
+    }
+
 export const getPoliciesApi = async (token, customerid, curPageNo, size) => {
+  console.log("customerid: ", customerid);
     const response = await axios.get(`http://localhost:8080/insurance-app/customer/${customerid}/policies`, {
         params: {
           page: curPageNo - 1,
@@ -117,7 +125,8 @@ export const getEmployeesApi = async (token, curPageNo, size) => {
 }
 
 export const deleteEmployeeApi = async (token,employeeid) => {
-    await axios.post(`http://localhost:8080/insurance-app/users/inactiveemployee/${employeeid}`, {
+  console.log(token, employeeid);
+    await axios.post(`http://localhost:8080/insurance-app/users/inactiveemployee/${employeeid}`,{}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

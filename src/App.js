@@ -7,6 +7,8 @@ import CustomerPanel from './components/customer/CustomerPanel/CustomerPanel';
 import EmployeePanel from './components/employee/EmployeePanel/EmployeePanel';
 import AgentPanel from './components/agent/AgentPanel/AgentPanel';
 import RegisterCustomer from './components/registerCustomer/RegisterCustomer';
+import Home from './components/home/Home';
+import CustomerViewPlans from './components/customer/CustomerViewPlans/CustomerViewPlans';
 
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
     <>
     <Routes>
       <Route path="/" element={<Navigate to="login"/>} />
+      <Route path='/home' element={<Home/>}/>
+      <Route path='/viewplans' element={<CustomerViewPlans/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<RegisterCustomer/>}/>
       <Route path='/customerdashboard' element={<CustomerPanel/>}/>
