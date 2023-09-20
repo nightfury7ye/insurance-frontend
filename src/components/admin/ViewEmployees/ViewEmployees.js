@@ -113,6 +113,9 @@ const ViewEmployees = () => {
     } catch (error) {
       console.log("Error adding employee:", error);
       alert("Error: Username already exists");
+      // if(error.response.data){
+      //   alert(error.response.data)
+      // }
     }
   };
 

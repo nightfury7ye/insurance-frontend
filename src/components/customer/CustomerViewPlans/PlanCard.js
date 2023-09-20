@@ -3,7 +3,7 @@ import React from 'react';
 const PlanCard = ({ plan, onPlanClick}) => {
   return (
     <div className='plan-card' onClick={() => onPlanClick(plan.planid)}>
-      <h3>{plan.plan_name}</h3>
+      <h3>{plan.planname}</h3>
       <div className='plan-details'>
         <p><strong>Plan No.:</strong> {plan.planid}</p>
         {plan.schemes.length > 0 ? (

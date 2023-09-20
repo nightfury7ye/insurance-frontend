@@ -39,7 +39,7 @@ const ViewpolicyDetails = ({policyDetailsGlobal, moduleNameSetter,setPayment}) =
           let scheme = policy.insuranceScheme;
             setInsuranceScheme({
             schemeid: scheme.schemeid,
-            scheme_name: scheme.scheme_name,
+            scheme_name: scheme.schemename,
             min_amount: scheme.schemeDetails.min_amount,
             max_amount: scheme.schemeDetails.max_amount,
             min_invest_time: scheme.schemeDetails.min_invest_time,

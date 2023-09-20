@@ -126,6 +126,9 @@ const ViewAgents = () => {
     } catch (error) {
       console.log("Error: Username already exists", error);
       alert("Error: Username already exists");
+      // if(error.response.data){
+      //   alert(error.response.data)
+      // }
     }
   };
 

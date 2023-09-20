@@ -27,7 +27,7 @@ const ViewPolicies = ({setPolicyDetailsGlobal, moduleNameSetter}) => {
         premiumamount: policy.premiumamount,
         sumassured: policy.sumassured,
         // installmentType: policy.installmentType.typeid,
-        scheme_name: policy.insuranceScheme.scheme_name,
+        scheme_name: policy.insuranceScheme.schemename,
       }));
 
       setPolicyData(policyDtoArray);

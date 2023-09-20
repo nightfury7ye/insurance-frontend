@@ -121,7 +121,9 @@ const ViewScheme = ({planid, setPlanid}) => {
             getschemesData();
             alert("Scheme added successfully");
           } catch (error) {
-            alert("Error adding scheme: " + error.message);
+            if(error.response.data){
+                alert(error.response.data)
+            }
           }
     }
     
@@ -211,7 +213,7 @@ const ViewScheme = ({planid, setPlanid}) => {
         console.log(schemeObject.schemeid);
         setSchemeid(schemeObject.schemeid)
         setSchemeDto({
-            scheme_name: schemeObject.scheme_name,
+            scheme_name: schemeObject.schemename,
             description: schemeObject.schemeDetails.discription,
             min_amount: schemeObject.schemeDetails.min_amount,
             max_amount: schemeObject.schemeDetails.max_amount,

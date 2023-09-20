@@ -3,7 +3,7 @@ import axios from "axios";
 export const addPlanApi = async (token, planname) => {
     const response = await axios.post(`http://localhost:8080/insurance-app/insurance-plan`,
         {
-            plan_name: `${planname}`
+            planname: `${planname}`
         },
         {
             params: {
@@ -19,7 +19,7 @@ export const addPlanApi = async (token, planname) => {
 export const updatePlanApi = async (token, planid, planname) => {
     const response = await axios.put(`http://localhost:8080/insurance-app/insurance-plan/${planid}?statusid=${1}`,
         {
-            plan_name: planname
+            planname: planname
         },
         {
             headers: {
@@ -43,7 +43,7 @@ export const deletePlanApi = async (planid) => {
 export const addSchemeApi = async (schemeDto, planid, token) => {
     let response = await axios.post(`http://localhost:8080/insurance-app/insurance-plan/${planid}/insurance-scheme`,
         {
-            scheme_name: schemeDto.scheme_name,
+            schemename: schemeDto.scheme_name,
             schemeDetails: {
                 discription: schemeDto.description,
                 min_amount: schemeDto.min_amount,
@@ -70,7 +70,7 @@ export const addSchemeApi = async (schemeDto, planid, token) => {
 export const updateSchemeApi = async (schemeid,schemeDto,token) => {
     let response = await axios.put(`http://localhost:8080/insurance-app/insurance-scheme/${schemeid}`,
     {
-        scheme_name: schemeDto.scheme_name,
+        schemename: schemeDto.scheme_name,
         schemeDetails: {
             discription: schemeDto.description,
             min_amount: schemeDto.min_amount,
